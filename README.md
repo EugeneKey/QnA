@@ -1,3 +1,3 @@
-# Учебное приложенние для курса обучения Thinknetica.
+# Учебное приложение для курса обучения Thinknetica.
 
-Курс обучения RoR от thinknetica.com (http://thinknetica.com/)
+Курс обучения RoR от [*thinknetica*](http://thinknetica.com/)
