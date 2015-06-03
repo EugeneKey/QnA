@@ -1,0 +1,18 @@
+# This is the configuration used to check the rubocop source code.
+#inherit_from: .rubocop_todo.yml
+
+Metrics/LineLength:
+  Enabled: false
+
+Style/BlockComments:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+AllCops:
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'Guardfile'
+    - 'bin/*'
