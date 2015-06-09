@@ -1,10 +1,10 @@
 FactoryGirl.define do
   factory :question do
     sequence(:title) { |i| "Title Question #{i}" }
-    text "Text Question"
+    text 'Text Question'
   end
 
-  factory :invalid_question, class: "Question" do
+  factory :invalid_question, class: 'Question' do
     titile nil
     text nil
   end

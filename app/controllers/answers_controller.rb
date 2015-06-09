@@ -6,12 +6,12 @@ class AnswersController < ApplicationController
   end
 
   def create
-      @answer = @question.answers.new(answer_params)
-      if @answer.save
-        redirect_to @question
-      else
-        render :new
-      end
+    @answer = @question.answers.new(answer_params)
+    if @answer.save
+      redirect_to @question
+    else
+      render :new
+    end
   end
 
   def update
@@ -29,7 +29,7 @@ class AnswersController < ApplicationController
   end
 
   def load_answer
-    @answer= @question.answers.find(params[:id])
+    @answer = @question.answers.find(params[:id])
   end
 
   def answer_params

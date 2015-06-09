@@ -55,7 +55,6 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'POST #create' do
     context 'with valid attributes' do
-
       it 'saves the new question in the database' do
         expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
       end
@@ -67,7 +66,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'with invalid attributes' do
-
       it 'does not save question' do
         expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
       end
@@ -119,7 +117,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     it 'redirect to index view' do
-      delete :destroy, id:question
+      delete :destroy, id: question
       expect(response).to redirect_to questions_path
     end
   end
