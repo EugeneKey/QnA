@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.2.0'
 gem 'bootstrap-sass'
 gem 'slim-rails'
+gem 'devise'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -56,4 +57,6 @@ end
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'capybara'
+  gem 'launchy'
 end

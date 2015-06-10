@@ -1,0 +1,23 @@
+h1 = @question.title
+
+p= @question.text
+- if user_signed_in? and @question.user_id == current_user.id
+  div class="question-options"
+    nav
+      ul
+        li= link_to 'Edit question', edit_question_path
+        li= link_to 'Delete question', @question, method: :delete
+
+h2 Answer
+ul class="list_answers"
+  - @answers.each do |a|
+    li= a.text
+    - if user_signed_in? and a.user_id == current_user.id
+      div class="answer-options"
+        nav
+          ul
+            li= link_to 'Edit answer', edit_answer_path(a)
+            li= link_to 'Delete answer', a, method: :delete
+
+div class="center hero-unit"
+  = link_to "Create Answer", new_question_answer_path(@question.id), class: "btn btn-large btn-primary"
