@@ -1,9 +1,0 @@
-ul class="list-answers"
-  - @question.answers.each do |a|
-    li= a.text
-    - if user_signed_in? and a.user_id == current_user.id
-      div class="answer-options"
-        nav
-          ul
-            li= link_to 'Edit answer', edit_answer_path(a)
-            li= link_to 'Delete answer', a, method: :delete

@@ -1,0 +1,8 @@
+- if answer.persisted?
+  li= answer.text
+  - if user_signed_in? and answer.user_id == current_user.id
+    div class="answer-options"
+      nav
+        ul
+          li= link_to 'Edit answer', edit_answer_path(answer)
+          li= link_to 'Delete answer', answer, method: :delete

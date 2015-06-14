@@ -10,7 +10,9 @@ p= @question.text
 
 h2 Answer
 .answers
-  = render 'answers'
+  ul class="list-answers"
+    - @question.answers.each do |answer|
+      = render partial: 'answer', locals: {answer: answer}
 
 - if user_signed_in?
   div class="center hero-unit"
