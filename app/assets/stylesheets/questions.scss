@@ -16,3 +16,9 @@ input[type="submit"] {
     }
   }
 }
+
+.list-questions, .list-answers {
+  li{
+    list-style-type: none;
+  }
+}
