@@ -8,24 +8,25 @@ feature 'Create answer to question', %q{
   given(:user) { create(:user) }
   given!(:question) { create(:question) }
 
-  scenario 'Authenticated user create answer to question' do
+  scenario 'Authenticated user create answer to question', js: true do
     sign_in(user)
-    visit questions_path
-    click_on 'Title Question'
-    click_on 'Create Answer'
-    fill_in 'Text', with: 'Some text for answer'
-    click_on 'Create'
+    visit question_path(question)
 
+    fill_in 'Your answer', with: 'Some text for answer'
+    click_on 'Create Answer'
+
+    within '.list-answers' do
+      expect(page).to have_content 'Some text for answer'
+    end
     expect(page).to have_content 'Your answer successfully created.'
-    expect(page).to have_content 'Some text for answer'
     expect(current_path).to eq question_path(question)
+
   end
 
-  scenario 'Non-authenticated user trying to create question' do
-    visit questions_path
-    click_on 'Title Question'
-    click_on 'Create Answer'
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+  scenario 'Non-authenticated user trying to create answer', js: true do
+    visit question_path(question)
+
+    expect(page).to_not have_content 'Create Answer'
   end
 end
