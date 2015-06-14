@@ -21,12 +21,12 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if @answer.user_id == current_user.id and @answer.update(answer_params)
-        @question = @answer.question
-        redirect_to question_path(@question)
-      else
-        render :edit
-      end
+    if @answer.user_id == current_user.id && @answer.update(answer_params)
+      @question = @answer.question
+      redirect_to question_path(@question)
+    else
+      render :edit
+    end
   end
 
   def destroy

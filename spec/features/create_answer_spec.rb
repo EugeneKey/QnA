@@ -6,10 +6,9 @@ feature 'Create answer to question', %q{
   I want to be able to respond to current questions
 } do
   given(:user) { create(:user) }
-  given(:question) { create(:question) }
+  given!(:question) { create(:question) }
 
   scenario 'Authenticated user create answer to question' do
-    question
     sign_in(user)
     visit questions_path
     click_on 'Title Question'
@@ -23,7 +22,6 @@ feature 'Create answer to question', %q{
   end
 
   scenario 'Non-authenticated user trying to create question' do
-    question
     visit questions_path
     click_on 'Title Question'
     click_on 'Create Answer'

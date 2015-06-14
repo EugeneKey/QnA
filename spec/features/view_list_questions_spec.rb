@@ -4,11 +4,10 @@ feature 'View list questions', %q{
   All user can do it
 } do
   given(:user) { create(:user) }
-  given(:questions) { create_list(:question, 5) }
+  given!(:questions) { create_list(:question, 5, user: user) }
 
   scenario 'Authenticated user view list questions' do
     sign_in(user)
-    questions
     visit root_path
 
     questions.each do |q|
@@ -17,7 +16,6 @@ feature 'View list questions', %q{
   end
 
   scenario 'Non-authenticated user view list questions' do
-    questions
     visit root_path
 
     questions.each do |q|

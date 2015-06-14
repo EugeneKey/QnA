@@ -28,7 +28,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if @question.user_id == current_user.id and @question.update(question_params)
+    if @question.user_id == current_user.id && @question.update(question_params)
       redirect_to @question
     else
       render :edit
