@@ -3,25 +3,25 @@ class AnswersController < ApplicationController
   before_action :load_question, only: [:create]
   before_action :load_answer, except: [:create]
 
-  def edit
-  end
-
   def create
       @answer = @question.answers.build(answer_params.merge(user: current_user))
-      flash.now[:notice] = 'Your answer successfully created.' if @answer.save
+      @answer.save
   end
 
   def update
-    if @answer.user_id == current_user.id && @answer.update(answer_params)
-      redirect_to question_path(@answer.question)
-    else
-      render :edit
-    end
+    @question = @answer.question if @answer.user_id == current_user.id && @answer.update(answer_params)
   end
 
   def destroy
-    flash[:notice] = 'Your answer successfully deleted.' if @answer.user_id == current_user.id && @answer.destroy
-    redirect_to @answer.question
+    @answer.destroy if @answer.user_id == current_user.id
+  end
+
+  def set_best
+    @question = @answer.question if @answer.question.user_id == current_user.id && @answer.set_best
+  end
+
+  def cancel_best
+    @question = @answer.question if @answer.question.user_id == current_user.id && @answer.cancel_best
   end
 
   private

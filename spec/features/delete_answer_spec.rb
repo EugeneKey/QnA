@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature 'Delete answer', %q{
   Only the owner can remove the answer
@@ -8,12 +8,11 @@ feature 'Delete answer', %q{
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
-  scenario 'Authenticated user delete own answer' do
+  scenario 'Authenticated user delete own answer', js: true do
     sign_in(user)
     visit question_path(question)
     click_on 'Delete answer'
 
-    expect(page).to have_content 'Your answer successfully deleted.'
     expect(page).to_not have_content 'Text Answer'
     expect(current_path).to eq question_path(question)
   end

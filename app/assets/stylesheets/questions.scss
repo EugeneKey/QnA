@@ -17,8 +17,9 @@ input[type="submit"] {
   }
 }
 
-.list-questions, .list-answers {
+.list-questions,{
   li{
     list-style-type: none;
+    margin-left: 14px;
   }
 }

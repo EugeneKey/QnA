@@ -1,0 +1,26 @@
+- if answer.persisted?
+  .answer id = "answer-#{answer.id}"
+    - if answer.best_answer
+      .answer-best Best answer
+    .answer-body = answer.text
+    .answer-options
+      nav
+        ul
+          li= answer.created_at
+          - if user_signed_in? and answer.user_id == current_user.id
+            li= link_to 'Edit answer', '', class: "edit-answer-link", data: {answer_id: answer.id}
+            li= link_to 'Delete answer', answer, remote: true, method: :delete
+
+          - if user_signed_in? and @question.user_id == current_user.id
+            - if answer.best_answer
+              li= link_to 'Cancel accept answer', cancel_best_answer_path(answer),
+                          class: "set-best-link", method: :patch, remote: true
+            - else
+              li= link_to 'Accept answer', set_best_answer_path(answer),
+                          class: "set-best-link", method: :patch, remote: true
+
+  - if user_signed_in? and answer.user_id == current_user.id
+    = form_for [answer], remote: true, html: {id: "edit-answer-#{answer.id}"} do |f|
+      = f.label :text, 'Edit your answer:'
+      = f.text_area :text, class: "form-control"
+      = f.submit 'Save', class: "btn btn-primary btn-lg btn-block"

@@ -6,19 +6,6 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question, user: user) }
   let(:answer) { create(:answer, question: question, user: user) }
 
-  describe 'GET #edit' do
-    sign_in_user
-    before { get :edit, question_id: question, id: answer }
-
-    it 'assigns the requested answer to @answer' do
-      expect(assigns(:answer)).to eq answer
-    end
-
-    it 'renders edit view' do
-      expect(response).to render_template :edit
-    end
-  end
-
   describe 'POST #create' do
     context 'non-authenticated user' do
       it 'does not save answer' do
@@ -64,7 +51,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATCH #update' do
     sign_in_user
     context 'valid attributes' do
-      before { patch :update, question_id: question, id: answer, answer: { text: 'new body' } }
+      before { patch :update, question_id: question, id: answer, answer: { text: 'new body' }, format: :js  }
 
       it 'assigns the requested answer to @answer' do
         expect(assigns(:answer)).to eq answer
@@ -75,34 +62,116 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.text).to eq 'new body'
       end
 
-      it 'redirects to the updated question' do
-        expect(response).to redirect_to question_path(question)
+      it 'render update template' do
+        expect(response).to render_template :update
       end
     end
 
     context 'invalid attributes' do
-      before { patch :update, question_id: question, id: answer, answer: { text: nil } }
+      before { patch :update, question_id: question, id: answer, answer: { text: nil }, format: :js  }
       it 'does not change question attributes' do
         answer.reload
         expect(answer.text).to_not eq nil
       end
 
-      it 're-render edit view' do
-        expect(response).to render_template :edit
+      it 'render update template' do
+        expect(response).to render_template :update
       end
     end
 
     context 'another authenticated user' do
       sign_in_another_user
-      before { patch :update, question_id: question, id: answer, answer: { text: 'new body' } }
+      before { patch :update, question_id: question, id: answer, answer: { text: 'new body' }, format: :js  }
 
       it 'does not changes answer attributes' do
         answer.reload
         expect(answer.text).to_not eq 'new body'
       end
 
-      it 're-render edit view' do
-        expect(response).to render_template :edit
+      it 'render update template' do
+        expect(response).to render_template :update
+      end
+    end
+  end
+
+  describe 'PATCH #best_answer' do
+    let(:answer_2) { create(:answer, question: question, user: another_user) }
+    sign_in_user
+    context 'author question select best answer' do
+      before { patch :set_best, question_id: question, id: answer, format: :js  }
+
+      it 'this answer the best' do
+        expect(answer.reload.best_answer).to be_truthy
+      end
+
+      it 'another answer not best' do
+        expect(answer_2.reload.best_answer).to be_falsey
+      end
+
+      it 'this answer became the first' do
+        expect(question.answers.first).to eq answer
+      end
+
+      it 'redirect to set_best' do
+        expect(response).to render_template :set_best
+      end
+    end
+
+
+    context 'author selects the two best answers' do
+      before do
+        patch :set_best, question_id: question, id: answer, format: :js
+        patch :set_best, question_id: question, id: answer_2, format: :js
+      end
+
+      it 'second selected answer the best' do
+        expect(answer_2.reload.best_answer).to be_truthy
+      end
+
+      it 'first selected answer is not best' do
+        expect(answer.reload.best_answer).to be_falsey
+      end
+
+      it 'second selected answer became the first' do
+        expect(question.answers.first).to eq answer_2
+      end
+
+      it 'best answer only one' do
+        expect(question.answers.where(best_answer: true).count).to eq 1
+      end
+
+      it 'redirect to set_best' do
+        expect(response).to render_template :set_best
+      end
+    end
+
+    context 'not author the question try to select the best answer' do
+      sign_in_another_user
+      before { patch :set_best, question_id: question, id: answer_2, format: :js }
+
+      it "selected answer is not best" do
+        expect(answer_2.reload.best_answer).to be_falsey
+      end
+
+      it 'not have best answer' do
+        expect(question.answers.where(best_answer: true).count).to eq 0
+      end
+
+      it 'redirect to set_best' do
+        expect(response).to render_template :set_best
+      end
+    end
+
+    context 'author question cancel best answer' do
+      let(:answer_best) { create(:answer, question: question, user: another_user, best_answer: true) }
+      before { patch :cancel_best, question_id: question, id: answer_best, format: :js }
+
+      it 'not have best answer' do
+        expect(answer_best.reload.best_answer).to be_falsey
+      end
+
+      it 'redirect to set_best' do
+        expect(response).to render_template :cancel_best
       end
     end
   end
@@ -112,12 +181,12 @@ RSpec.describe AnswersController, type: :controller do
       sign_in_user
       it 'deletes answer' do
         answer
-        expect { delete :destroy, id: answer, question_id: question }.to change(Answer, :count).by(-1)
+        expect { delete :destroy, id: answer, question_id: question, format: :js }.to change(Answer, :count).by(-1)
       end
 
       it 'redirect to question' do
-        delete :destroy, id: answer, question_id: question
-        expect(response).to redirect_to question
+        delete :destroy, id: answer, question_id: question, format: :js
+        expect(response).to render_template :destroy
       end
     end
 
@@ -125,19 +194,19 @@ RSpec.describe AnswersController, type: :controller do
       sign_in_another_user
       it 'do not deletes answer' do
         answer
-        expect { delete :destroy, id: answer, question_id: question }.to_not change(Answer, :count)
+        expect { delete :destroy, id: answer, question_id: question, format: :js }.to_not change(Answer, :count)
       end
 
       it 'redirect to question' do
-        delete :destroy, id: answer, question_id: question
-        expect(response).to redirect_to question
+        delete :destroy, id: answer, question_id: question, format: :js
+        expect(response).to render_template :destroy
       end
     end
 
     context 'non-authenticated user' do
       it 'not deletes answer' do
         answer
-        expect { delete :destroy, id: answer, question_id: question }.to_not change(Answer, :count)
+        expect { delete :destroy, id: answer, question_id: question, format: :js }.to_not change(Answer, :count)
       end
 
       it 'redirect to sign_in' do

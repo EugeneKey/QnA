@@ -10,13 +10,13 @@ p= @question.text
 
 h2 Answer
 .answers
-  ul class="list-answers"
-    - @question.answers.each do |answer|
-      = render partial: 'answer', locals: {answer: answer}
+  .list-answers
+    = render @question.answers
 
 - if user_signed_in?
-  div class="center hero-unit"
+  div class="center hero-unit new-answer-form"
     = form_for [@question, @answer], remote: true do |f|
       = f.label :text, 'Your answer'
-      = f.text_area :text, class: "form-control"
+      .answer-error
+      = f.text_area :text, class: "form-control", id: 'answer_create'
       = f.submit 'Create Answer', class: "btn btn-primary btn-lg btn-block"

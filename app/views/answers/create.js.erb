@@ -1,3 +1,13 @@
-$('.list-answers').append('<%= j render partial: 'questions/answer', locals: {answer: @answer} %>');
-$('#answer_text').val('');
-$('.notice').html('<%= j render 'layouts/notice' %>');
+<% if @answer.errors.present? %>
+    <% @answer.errors.full_messages.each do |message| %>
+        $('.answer-error').html('<%= j message %>');
+    <% end %>
+<% else %>
+    $('.list-answers').append('<%= j render partial: 'answer', locals: {answer: @answer} %>');
+    $('#answer_create').val('');
+    $('.edit-answer-link').click(function(e) {
+        e.preventDefault();
+        answer_id = $(this).data('answerId');
+        $('form#edit-answer-' + answer_id).show();
+    });
+<% end %>
