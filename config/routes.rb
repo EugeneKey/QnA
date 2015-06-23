@@ -1,12 +1,14 @@
 Rails.application.routes.draw do
 
   devise_for :users
-  resources :questions do
-    resources :answers, shallow: true do
+  resources :questions, shallow: true do
+    resources :answers do
       patch "set_best", on: :member
       patch "cancel_best", on: :member
     end
   end
+
+  resources :attachments, only: [:destroy]
 
   root to: "questions#index"
 

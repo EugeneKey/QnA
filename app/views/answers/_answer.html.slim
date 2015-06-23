@@ -3,6 +3,7 @@
     - if answer.best_answer
       .answer-best Best answer
     .answer-body = answer.text
+    = render 'attachments/attachments', model: answer
     .answer-options
       nav
         ul
@@ -23,4 +24,5 @@
     = form_for [answer], remote: true, html: {id: "edit-answer-#{answer.id}"} do |f|
       = f.label :text, 'Edit your answer:'
       = f.text_area :text, class: "form-control"
+      = render 'attachments/attachments_fields', f: f
       = f.submit 'Save', class: "btn btn-primary btn-lg btn-block"

@@ -1,0 +1,5 @@
+- if model.attachments.count > 0
+  p Attachments:
+.attachments
+  - model.attachments.each do |a|
+    = render 'attachments/attachment', a: a

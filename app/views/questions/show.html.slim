@@ -7,6 +7,7 @@ p= @question.text
       ul
         li= link_to 'Edit question', edit_question_path
         li= link_to 'Delete question', @question, method: :delete
+= render 'attachments/attachments', model: @question
 
 h2 Answer
 .answers
@@ -19,4 +20,5 @@ h2 Answer
       = f.label :text, 'Your answer'
       .answer-error
       = f.text_area :text, class: "form-control", id: 'answer_create'
+      = render 'attachments/attachments_fields', f: f
       = f.submit 'Create Answer', class: "btn btn-primary btn-lg btn-block"

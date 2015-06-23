@@ -22,3 +22,7 @@ doc/
 .idea
 .secret
 .sublime*
+
+# Ignore public uploaded files
+/public/uploads
+/public/tmp
