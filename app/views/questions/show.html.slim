@@ -1,12 +1,13 @@
 h1 = @question.title
 
 p= @question.text
-- if user_signed_in? and @question.user_id == current_user.id
-  div class="question-options"
+.question-options
+  - if user_signed_in? and @question.user_id == current_user.id
     nav
       ul
         li= link_to 'Edit question', edit_question_path
         li= link_to 'Delete question', @question, method: :delete
+  = render 'votes/vote', votable: @question, type: "question"
 = render 'attachments/attachments', model: @question
 
 h2 Answer

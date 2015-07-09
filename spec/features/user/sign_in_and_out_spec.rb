@@ -1,4 +1,4 @@
-require_relative 'acceptance_helper'
+require 'features/acceptance_helper'
 
 feature 'User sign in', %q{
   In order to be able to ask question

@@ -1,4 +1,4 @@
-require_relative 'acceptance_helper'
+require 'features/acceptance_helper'
 
 feature 'Create answer to question', %q{
   In order to give answers to questions

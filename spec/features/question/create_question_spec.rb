@@ -1,4 +1,4 @@
-require_relative 'acceptance_helper'
+require 'features/acceptance_helper'
 
 feature 'Create question', %q{
   In order to get answer from community

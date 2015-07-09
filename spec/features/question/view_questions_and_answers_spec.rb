@@ -1,4 +1,4 @@
-require_relative 'acceptance_helper'
+require 'features/acceptance_helper'
 
 feature 'View the question and all answers to it', %q{
   All user can do it

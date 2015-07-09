@@ -1,4 +1,4 @@
-require_relative 'acceptance_helper'
+require 'features/acceptance_helper'
 
 feature 'Select best answer', %q{
   In order to be able to indicate the correct answer

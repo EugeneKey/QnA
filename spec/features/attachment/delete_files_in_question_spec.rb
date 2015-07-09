@@ -1,4 +1,4 @@
-require_relative 'acceptance_helper'
+require 'features/acceptance_helper'
 
 feature 'Delete files from question', %q{
   In order to fix mistake attachments
