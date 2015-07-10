@@ -1,10 +1,11 @@
 require 'features/acceptance_helper'
 
-feature 'User registration', %q{
+feature 'User registration', '
   In order to be able to ask question and create answer
   As an User
   I want to be able to sign up
-} do
+
+' do
   scenario 'User try to sign up' do
     visit root_path
     click_on 'Sign Up'

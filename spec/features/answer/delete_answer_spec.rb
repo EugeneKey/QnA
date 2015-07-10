@@ -1,8 +1,9 @@
 require 'features/acceptance_helper'
 
-feature 'Delete answer', %q{
+feature 'Delete answer', '
   Only the owner can remove the answer
-} do
+
+' do
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given(:question) { create(:question, user: user) }

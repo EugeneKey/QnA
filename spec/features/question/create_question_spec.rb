@@ -1,10 +1,11 @@
 require 'features/acceptance_helper'
 
-feature 'Create question', %q{
+feature 'Create question', '
   In order to get answer from community
   As an authenticated user
   I want to be able to ask questions
-} do
+
+' do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
 

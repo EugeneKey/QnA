@@ -1,10 +1,11 @@
 require 'features/acceptance_helper'
 
-feature 'Answer editing', %q{
+feature 'Answer editing', '
   In order to fix mistake
   As an author answer
   I want to be able to edit my answer
-} do
+
+' do
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given!(:question) { create(:question) }
@@ -23,15 +24,15 @@ feature 'Answer editing', %q{
     end
 
     scenario 'try to edit his answer', js: true do
-        click_on 'Edit answer'
-        within '.answers' do
-          fill_in 'Edit your answer:', with: 'Edited answer'
-          click_on 'Save'
+      click_on 'Edit answer'
+      within '.answers' do
+        fill_in 'Edit your answer:', with: 'Edited answer'
+        click_on 'Save'
 
-          expect(page).to_not have_content answer.text
-          expect(page).to have_content 'Edited answer'
-          expect(page).to_not have_selector 'textarea'
-        end
+        expect(page).to_not have_content answer.text
+        expect(page).to have_content 'Edited answer'
+        expect(page).to_not have_selector 'textarea'
+      end
     end
   end
 

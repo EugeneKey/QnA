@@ -1,25 +1,26 @@
 require 'features/acceptance_helper'
 
-feature 'Delete files from answer', %q{
+feature 'Delete files from answer', '
   In order to fix mistake attachments
   As an author answer
   I want to be able to deletes files
-} do
+
+' do
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given(:question) { create(:question, user: another_user) }
-  given(:answer) { create(:answer, question: question ,user: user) }
+  given(:answer) { create(:answer, question: question, user: user) }
   given!(:attachment) { create(:attachment, attachable: answer) }
 
-  describe "Authenticated owner answer user" do
+  describe 'Authenticated owner answer user' do
     background do
       sign_in user
       visit question_path(question)
     end
 
-    scenario "have link to delete attachment" do
+    scenario 'have link to delete attachment' do
       within '.list-answers .attachments' do
-        expect(page).to have_link "Delete"
+        expect(page).to have_link 'Delete'
       end
     end
 
@@ -32,20 +33,20 @@ feature 'Delete files from answer', %q{
     end
   end
 
-  scenario "Non-owner answer user try to delete attachment from answer" do
+  scenario 'Non-owner answer user try to delete attachment from answer' do
     sign_in another_user
     visit question_path(question)
 
     within '.list-answers .attachments' do
-      expect(page).to_not have_link "Delete"
+      expect(page).to_not have_link 'Delete'
     end
   end
 
-  scenario "Non-authenticated user try to delete attachment from answer" do
+  scenario 'Non-authenticated user try to delete attachment from answer' do
     visit question_path(question)
 
     within '.list-answers .attachments' do
-      expect(page).to_not have_link "Delete"
+      expect(page).to_not have_link 'Delete'
     end
   end
 end

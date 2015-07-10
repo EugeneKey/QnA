@@ -1,11 +1,11 @@
 require 'features/acceptance_helper'
 
-feature 'Vote for the answer', %q{
+feature 'Vote for the answer', '
   In order to be able to select a useful answer
   As an authenticated user
   I want to be able to vote
-} do
 
+' do
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given(:question) { create(:question, user: user) }

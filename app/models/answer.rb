@@ -6,7 +6,7 @@ class Answer < ActiveRecord::Base
   belongs_to :user
   validates :text, :question_id, :user_id, presence: true
 
-  default_scope { order ('best_answer DESC, created_at')  }
+  default_scope { order('best_answer DESC, created_at')  }
 
   def set_best
     transaction do

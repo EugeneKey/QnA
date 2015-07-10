@@ -1,11 +1,11 @@
 require 'features/acceptance_helper'
 
-feature 'Select best answer', %q{
+feature 'Select best answer', '
   In order to be able to indicate the correct answer
   As an Author question
   I want to be able select best answer
-} do
 
+' do
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given!(:question) { create(:question, user: user) }

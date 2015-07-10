@@ -1,10 +1,11 @@
 require 'features/acceptance_helper'
 
-feature 'Question editing', %q{
+feature 'Question editing', '
   In order to fix mistake
   As an author question
   I want to be able to edit my question
-} do
+
+' do
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given!(:question) { create(:question, user: user) }
@@ -22,7 +23,7 @@ feature 'Question editing', %q{
     end
 
     scenario 'sees link to edit his question' do
-        expect(page).to have_link 'Edit question'
+      expect(page).to have_link 'Edit question'
     end
 
     scenario 'try to edit his question' do

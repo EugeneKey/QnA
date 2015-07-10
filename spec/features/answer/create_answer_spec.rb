@@ -1,10 +1,11 @@
 require 'features/acceptance_helper'
 
-feature 'Create answer to question', %q{
+feature 'Create answer to question', '
   In order to give answers to questions
   As an authenticated user
   I want to be able to respond to current questions
-} do
+
+' do
   given(:user) { create(:user) }
   given!(:question) { create(:question) }
 
@@ -21,7 +22,6 @@ feature 'Create answer to question', %q{
       expect(page).to have_content 'Some text for answer'
     end
     expect(current_path).to eq question_path(question)
-
   end
 
   scenario 'Authenticated user try to create invalid answer', js: true do

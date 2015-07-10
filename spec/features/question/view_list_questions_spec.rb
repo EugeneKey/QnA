@@ -1,8 +1,9 @@
 require 'features/acceptance_helper'
 
-feature 'View list questions', %q{
+feature 'View list questions', '
   All user can do it
-} do
+
+' do
   given(:user) { create(:user) }
   given!(:questions) { create_list(:question, 5, user: user) }
 

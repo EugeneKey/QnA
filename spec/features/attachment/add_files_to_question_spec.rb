@@ -1,10 +1,11 @@
 require 'features/acceptance_helper'
 
-feature 'Add files to question', %q{
+feature 'Add files to question', '
   In order to illustrate my question
   As an Author question
   I want to be able to attach files
-} do
+
+' do
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
 
@@ -19,23 +20,23 @@ feature 'Add files to question', %q{
     attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
     click_on 'Create'
 
-    expect(page).to have_link "spec_helper.rb"
+    expect(page).to have_link 'spec_helper.rb'
   end
 
   scenario 'User add several files when asks question', js: true do
     fill_in 'Title', with: 'Test question'
     fill_in 'Text', with: 'Some text for question'
     click_link 'add files'
-    within ".nested-fields:first-child" do
+    within '.nested-fields:first-child' do
       attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
     end
-    within ".nested-fields:nth-child(2)" do
+    within '.nested-fields:nth-child(2)' do
       attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
     end
     click_on 'Create'
 
-    expect(page).to have_link "spec_helper.rb"
-    expect(page).to have_link "rails_helper.rb"
+    expect(page).to have_link 'spec_helper.rb'
+    expect(page).to have_link 'rails_helper.rb'
   end
 
   scenario 'User add file while editing existing question', js: true do
@@ -46,6 +47,6 @@ feature 'Add files to question', %q{
     attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
     click_on 'Update'
 
-    expect(page).to have_link "spec_helper.rb"
+    expect(page).to have_link 'spec_helper.rb'
   end
 end

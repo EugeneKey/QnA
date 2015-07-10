@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  it_should_behave_like "voted"
+  it_should_behave_like 'voted'
 
   let(:user) { create(:user) }
   let(:another_user) { create(:user) }
@@ -119,7 +119,6 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-
     context 'author selects the two best answers' do
       before do
         patch :set_best, question_id: question, id: answer, format: :js
@@ -151,7 +150,7 @@ RSpec.describe AnswersController, type: :controller do
       sign_in_another_user
       before { patch :set_best, question_id: question, id: answer_2, format: :js }
 
-      it "selected answer is not best" do
+      it 'selected answer is not best' do
         expect(answer_2.reload.best_answer).to be_falsey
       end
 

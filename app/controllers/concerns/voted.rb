@@ -50,5 +50,4 @@ module Voted
       render json: @vote.errors.full_messages.join("\n"), status: :unprocessable_entity
     end
   end
-
 end

@@ -6,8 +6,8 @@ class AnswersController < ApplicationController
   include Voted
 
   def create
-      @answer = @question.answers.build(answer_params.merge(user: current_user))
-      @answer.save
+    @answer = @question.answers.build(answer_params.merge(user: current_user))
+    @answer.save
   end
 
   def update
