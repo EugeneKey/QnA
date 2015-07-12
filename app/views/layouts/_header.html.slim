@@ -8,7 +8,7 @@ header class="navbar navbar-fixed-top navbar-inverse"
           li= link_to "Ask Question", new_question_path
           - if user_signed_in?
             li
-              span Hello, #{current_user.email}
+              span(data-user-id="#{current_user.id}" id="user")= "Hello, #{current_user.email}"
             li= link_to 'Sign Out', destroy_user_session_path, method: :delete
           - else
             li= link_to 'Sign In', new_user_session_path

@@ -9,6 +9,8 @@ gem 'devise'
 gem 'carrierwave'
 gem 'remotipart'
 gem 'cocoon'
+gem 'private_pub'
+gem 'thin'
 
 # Use postgresql as the database for Active Record
 gem 'pg'

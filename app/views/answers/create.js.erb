@@ -3,11 +3,29 @@
         $('.answer-error').html('<%= j message %>');
     <% end %>
 <% else %>
-    $('.list-answers').append('<%= j render partial: 'answer', locals: {answer: @answer} %>');
     $('#answer_create').val('');
     $('.edit-answer-link').click(function(e) {
         e.preventDefault();
         answer_id = $(this).data('answerId');
         $('form#edit-answer-' + answer_id).show();
     });
+
+    <% publish_to "/questions/#{@question.id}/answers" do %>
+        current_user = $("#user").data('user-id');
+        $('.list-answers').append('<%= j render partial: 'answer', locals: {answer: @answer} %>');
+
+        if (current_user != <%= @answer.user_id %>) {
+            $("#answer-<%= @answer.id %> .edit-answer-link").parent().remove();
+            $("#answer-<%= @answer.id %> .delete-answer-link").parent().remove();
+            $("#answer-<%= @answer.id %> .set-best-link").hide();
+
+            if (current_user) {
+                $("#answer-<%= @answer.id %> .plus").show();
+                $("#answer-<%= @answer.id %> .minus").show();
+            }
+        }
+        if (current_user == <%= @question.user_id %>) {
+            $("#answer-<%= @answer.id %> .set-best-link").show();
+        }
+    <% end %>
 <% end %>
