@@ -6,7 +6,7 @@ h3 Comments
   - if user_signed_in?
     span= link_to 'Add comment', '', class: "add-comment-link",
                     data: {commentable_type_id: commentable.class.name.underscore + "-" + commentable.id.to_s}
-    = form_for [commentable, commentable.comments.new], remote: true,
+    = form_for [commentable, commentable.comments.new], remote: true, data: { type: :json },
                html: {id: "add-comment-#{commentable.class.name.underscore}-#{commentable.id}"} do |f|
       = f.label :text, 'Your comment'
       = f.text_area :text, class: "form-control"

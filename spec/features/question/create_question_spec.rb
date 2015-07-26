@@ -18,7 +18,7 @@ feature 'Create question', '
     fill_in 'Text', with: 'Some text for question'
     click_on 'Create'
 
-    expect(page).to have_content 'Your question successfully created.'
+    expect(page).to have_content 'Question was successfully created.'
     expect(page).to have_content 'Some text for question'
     expect(current_path).to eq question_path(question.id - 1)
   end

@@ -49,7 +49,6 @@ feature 'Add files to answer', '
     answer
     visit question_path(question)
     click_link 'Edit answer'
-
     within '.edit_answer' do
       click_on 'add files'
       attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"

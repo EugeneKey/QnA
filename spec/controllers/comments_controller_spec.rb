@@ -14,7 +14,7 @@ RSpec.describe CommentsController, type: :controller do
                  question_id: question,
                  commentable: 'questions',
                  comment: attributes_for(:comment),
-                 format: :js
+                 format: :json
           end.to_not change(Comment, :count)
         end
 
@@ -23,7 +23,7 @@ RSpec.describe CommentsController, type: :controller do
                question_id: question,
                commentable: 'questions',
                comment: attributes_for(:comment),
-               format: :js
+               format: :json
           expect(response.status).to eq(401)
         end
       end
@@ -36,7 +36,7 @@ RSpec.describe CommentsController, type: :controller do
                  question_id: question,
                  commentable: 'questions',
                  comment: attributes_for(:comment),
-                 format: :js
+                 format: :json
           end.to change(question.comments, :count).by(1)
         end
 
@@ -46,7 +46,7 @@ RSpec.describe CommentsController, type: :controller do
                  question_id: question,
                  commentable: 'questions',
                  comment: attributes_for(:comment),
-                 format: :js
+                 format: :json
           end.to change(user.comments, :count).by(1)
         end
 
@@ -55,7 +55,7 @@ RSpec.describe CommentsController, type: :controller do
                question_id: question,
                commentable: 'questions',
                comment: attributes_for(:comment),
-               format: :js
+               format: :json
           expect(response).to be_success
         end
 
@@ -65,7 +65,7 @@ RSpec.describe CommentsController, type: :controller do
                question_id: question,
                commentable: 'questions',
                comment: attributes_for(:comment),
-               format: :js
+               format: :json
         end
       end
 
@@ -77,7 +77,7 @@ RSpec.describe CommentsController, type: :controller do
                  question_id: question,
                  commentable: 'questions',
                  comment: attributes_for(:invalid_comment),
-                 format: :js
+                 format: :json
           end.to_not change(Comment, :count)
         end
 
@@ -86,7 +86,7 @@ RSpec.describe CommentsController, type: :controller do
                question_id: question,
                commentable: 'questions',
                comment: attributes_for(:invalid_comment),
-               format: :js
+               format: :json
           expect(response.status).to eq(422)
         end
 
@@ -96,7 +96,7 @@ RSpec.describe CommentsController, type: :controller do
                question_id: question,
                commentable: 'questions',
                comment: attributes_for(:invalid_comment),
-               format: :js
+               format: :json
         end
       end
     end
@@ -109,7 +109,7 @@ RSpec.describe CommentsController, type: :controller do
                  question_id: question,
                  commentable: 'answers',
                  comment: attributes_for(:comment),
-                 format: :js
+                 format: :json
           end.to_not change(Comment, :count)
         end
 
@@ -118,7 +118,7 @@ RSpec.describe CommentsController, type: :controller do
                question_id: question,
                commentable: 'answers',
                comment: attributes_for(:comment),
-               format: :js
+               format: :json
           expect(response.status).to eq(401)
         end
       end
@@ -131,7 +131,7 @@ RSpec.describe CommentsController, type: :controller do
                  question_id: question,
                  commentable: 'answers',
                  comment: attributes_for(:comment),
-                 format: :js
+                 format: :json
           end.to change(question.comments, :count).by(1)
         end
 
@@ -141,7 +141,7 @@ RSpec.describe CommentsController, type: :controller do
                  question_id: question,
                  commentable: 'answers',
                  comment: attributes_for(:comment),
-                 format: :js
+                 format: :json
           end.to change(user.comments, :count).by(1)
         end
 
@@ -150,7 +150,7 @@ RSpec.describe CommentsController, type: :controller do
                question_id: question,
                commentable: 'answers',
                comment: attributes_for(:comment),
-               format: :js
+               format: :json
           expect(response).to be_success
         end
 
@@ -160,7 +160,7 @@ RSpec.describe CommentsController, type: :controller do
                question_id: question,
                commentable: 'answers',
                comment: attributes_for(:comment),
-               format: :js
+               format: :json
         end
       end
 
@@ -172,7 +172,7 @@ RSpec.describe CommentsController, type: :controller do
                  question_id: question,
                  commentable: 'answers',
                  comment: attributes_for(:invalid_comment),
-                 format: :js
+                 format: :json
           end.to_not change(Comment, :count)
         end
 
@@ -181,7 +181,7 @@ RSpec.describe CommentsController, type: :controller do
                question_id: question,
                commentable: 'answers',
                comment: attributes_for(:invalid_comment),
-               format: :js
+               format: :json
           expect(response.status).to eq(422)
         end
 
@@ -191,7 +191,7 @@ RSpec.describe CommentsController, type: :controller do
                question_id: question,
                commentable: 'answers',
                comment: attributes_for(:invalid_comment),
-               format: :js
+               format: :json
         end
       end
     end

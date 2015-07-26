@@ -11,6 +11,7 @@ gem 'remotipart'
 gem 'cocoon'
 gem 'private_pub'
 gem 'thin'
+gem 'responders'
 
 # Use postgresql as the database for Active Record
 gem 'pg'

@@ -2,28 +2,32 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_question, only: [:create]
   before_action :load_answer, except: [:create]
+  before_action :access_answer, only: [:update, :destroy]
+  before_action :access_best, only: [:set_best, :cancel_best]
+
+  respond_to :js
 
   include Voted
 
   def create
-    @answer = @question.answers.build(answer_params.merge(user: current_user))
-    @answer.save
+    respond_with(@answer = @question.answers.create(answer_params.merge(user: current_user)))
   end
 
   def update
-    @question = @answer.question if @answer.user_id == current_user.id && @answer.update(answer_params)
+    @answer.update(answer_params)
+    respond_with(@answer)
   end
 
   def destroy
-    @answer.destroy if @answer.user_id == current_user.id
+    respond_with(@answer.destroy)
   end
 
   def set_best
-    @question = @answer.question if @answer.question.user_id == current_user.id && @answer.set_best
+    respond_with(@answer.set_best)
   end
 
   def cancel_best
-    @question = @answer.question if @answer.question.user_id == current_user.id && @answer.cancel_best
+    respond_with(@answer.cancel_best)
   end
 
   private
@@ -34,6 +38,15 @@ class AnswersController < ApplicationController
 
   def load_answer
     @answer = Answer.find(params[:id])
+    @question = @answer.question
+  end
+
+  def access_answer
+    redirect_to @answer.question, notice: 'Access denied' if  @answer.user_id != current_user.id
+  end
+
+  def access_best
+    redirect_to @answer.question, notice: 'Access denied' if  @answer.question.user_id != current_user.id
   end
 
   def answer_params

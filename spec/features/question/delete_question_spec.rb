@@ -14,7 +14,7 @@ Only the owner can remove the question
     visit question_path(question)
     click_on 'Delete question'
 
-    expect(page).to have_content 'Your question successfully deleted.'
+    expect(page).to have_content 'Question was successfully destroyed.'
     expect(page).to_not have_content 'Title Question'
     expect(current_path).to eq questions_path
   end

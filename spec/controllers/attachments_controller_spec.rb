@@ -27,9 +27,9 @@ RSpec.describe AttachmentsController, type: :controller do
           .to_not change(question.attachments, :count)
       end
 
-      it 'render destroy template' do
+      it 'redirect to root patch' do
         delete :destroy, id: attachment, format: :js
-        expect(response).to render_template :destroy
+        expect(response).to redirect_to root_path
       end
     end
 

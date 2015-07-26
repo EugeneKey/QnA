@@ -23,7 +23,7 @@ h2 Answers
       = f.label :text, 'Your answer'
       .answer-error
       = f.text_area :text, class: "form-control", id: 'answer_create'
-      = render 'attachments/attachments_fields', f: f
+      = render 'attachments/attachments_fields', f: f, build_attach: @answer.attachments.build
       = f.submit 'Create Answer', class: "btn btn-primary btn-lg btn-block"
 
 = subscribe_to "/questions/#{@question.id}/answers"

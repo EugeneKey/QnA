@@ -1,54 +1,39 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :edit, :update, :destroy]
-  before_action :load_answers, only: [:show]
+  before_action :load_answers, only: :show
+  before_action :build_answer, only: :show
+  before_action :access_question, only: [:edit, :update, :destroy]
+  after_action :publish_question, only: :create
 
   include Voted
 
   def index
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
 
   def show
-    @answer = @question.answers.build
-    @answer.attachments.build
+    respond_with @question
   end
 
   def new
-    @question = Question.new
-    @question.attachments.build
+    respond_with(@question = Question.new)
   end
 
   def edit
   end
 
   def create
-    @question = Question.new(question_params.merge(user: current_user))
-    if @question.save
-      PrivatePub.publish_to '/questions/index', question: @question.to_json
-      flash[:notice] = 'Your question successfully created.'
-      redirect_to @question
-    else
-      render :new
-    end
+    respond_with(@question = Question.create(question_params.merge(user: current_user)))
   end
 
   def update
-    if @question.user_id == current_user.id && @question.update(question_params)
-      redirect_to @question
-    else
-      render :edit
-    end
+    @question.update(question_params)
+    respond_with @question
   end
 
   def destroy
-    if @question.user_id == current_user.id
-      @question.destroy
-      flash[:notice] = 'Your question successfully deleted.'
-      redirect_to questions_path
-    else
-      redirect_to @question
-    end
+    respond_with(@question.destroy)
   end
 
   private
@@ -59,6 +44,18 @@ class QuestionsController < ApplicationController
 
   def load_answers
     @answers = @question.answers.find_each
+  end
+
+  def build_answer
+    @answer = @question.answers.build
+  end
+
+  def access_question
+    redirect_to root_path, notice: 'Access denied' if  @question.user_id != current_user.id
+  end
+
+  def publish_question
+    PrivatePub.publish_to '/questions/index', question: @question.to_json if @question.valid?
   end
 
   def question_params

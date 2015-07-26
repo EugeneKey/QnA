@@ -3,5 +3,5 @@
   = f.text_field :title, class: "form-control"
   = f.label :text
   = f.text_area :text, class: "form-control"
-  = render 'attachments/attachments_fields', f: f
+  = render 'attachments/attachments_fields', f: f, build_attach: @question.attachments.build
   = f.submit 'Create', class: "btn btn-primary btn-lg btn-block"

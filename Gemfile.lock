@@ -334,6 +334,7 @@ DEPENDENCIES
   private_pub
   rails (= 4.2.0)
   remotipart
+  responders
   rspec-rails
   rubocop
   rubocop-rspec

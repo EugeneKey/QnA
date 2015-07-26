@@ -37,10 +37,6 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
 
-    it 'assigns a new attachment to answer' do
-      expect(assigns(:answer).attachments.first).to be_a_new(Attachment)
-    end
-
     it 'renders show view' do
       expect(response).to render_template :show
     end
@@ -55,10 +51,6 @@ RSpec.describe QuestionsController, type: :controller do
         expect(assigns(:question)).to be_a_new(Question)
       end
 
-      it 'assigns a new attachment to question' do
-        expect(assigns(:question).attachments.first).to be_a_new(Attachment)
-      end
-
       it 'renders new view' do
         expect(response).to render_template :new
       end
@@ -71,7 +63,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect(assigns(:question)).to_not be_a_new(Question)
       end
 
-      it 'renders new view' do
+      it 'renders new user' do
         expect(response).to redirect_to new_user_session_path
       end
     end
@@ -175,8 +167,8 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.text).to_not eq 'new body'
       end
 
-      it 're-render edit view' do
-        expect(response).to render_template :edit
+      it 'redirect to root path' do
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -189,7 +181,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
       end
 
-      it 'redirect to index view' do
+      it 'redirect to question' do
         delete :destroy, id: question
         expect(response).to redirect_to questions_path
       end
@@ -202,9 +194,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect { delete :destroy, id: question }.to_not change(Question, :count)
       end
 
-      it 'redirect to question' do
+      it 'redirect to root path' do
         delete :destroy, id: question
-        expect(response).to redirect_to question
+        expect(response).to redirect_to root_path
       end
     end
 

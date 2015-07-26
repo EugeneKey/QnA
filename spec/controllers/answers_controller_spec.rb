@@ -14,7 +14,7 @@ RSpec.describe AnswersController, type: :controller do
         expect { post :create, question_id: question, answer: attributes_for(:invalid_answer), format: :js }.to_not change(Answer, :count)
       end
 
-      it 'redirects to user sign_in' do
+      it 'response 401' do
         post :create, question_id: question, answer: attributes_for(:answer), format: :js
         expect(response.status).to eq(401)
       end
@@ -90,8 +90,8 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.text).to_not eq 'new body'
       end
 
-      it 'render update template' do
-        expect(response).to render_template :update
+      it 'redirect to question' do
+        expect(response).to redirect_to question
       end
     end
   end
@@ -114,7 +114,7 @@ RSpec.describe AnswersController, type: :controller do
         expect(question.answers.first).to eq answer
       end
 
-      it 'redirect to set_best' do
+      it 'render set_best' do
         expect(response).to render_template :set_best
       end
     end
@@ -141,7 +141,7 @@ RSpec.describe AnswersController, type: :controller do
         expect(question.answers.where(best_answer: true).count).to eq 1
       end
 
-      it 'redirect to set_best' do
+      it 'render set_best' do
         expect(response).to render_template :set_best
       end
     end
@@ -158,8 +158,8 @@ RSpec.describe AnswersController, type: :controller do
         expect(question.answers.where(best_answer: true).count).to eq 0
       end
 
-      it 'redirect to set_best' do
-        expect(response).to render_template :set_best
+      it 'redirect to question' do
+        expect(response).to redirect_to question
       end
     end
 
@@ -171,7 +171,7 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer_best.reload.best_answer).to be_falsey
       end
 
-      it 'redirect to set_best' do
+      it 'render cancel_best' do
         expect(response).to render_template :cancel_best
       end
     end
@@ -185,7 +185,7 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, id: answer, question_id: question, format: :js }.to change(Answer, :count).by(-1)
       end
 
-      it 'redirect to question' do
+      it 'render destroy template' do
         delete :destroy, id: answer, question_id: question, format: :js
         expect(response).to render_template :destroy
       end
@@ -200,7 +200,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'redirect to question' do
         delete :destroy, id: answer, question_id: question, format: :js
-        expect(response).to render_template :destroy
+        expect(response).to redirect_to question
       end
     end
 
