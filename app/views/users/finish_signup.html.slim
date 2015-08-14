@@ -1,0 +1,22 @@
+div id="add-email" class="container"
+  h2 To complete registration fill the following fields
+  = form_for(@user, :as => 'user', :url => finish_signup_path, :html => {role: 'form'}) do |f|
+    - if @show_errors && @user.errors.any?
+      div id="error_explanation"
+        = @user.errors.full_messages.each do |msg|
+          = msg
+
+    div class="form-group"
+      = f.label :email
+      div class="controls"
+        = f.text_field :email, :autofocus => true, type: "email", :value => '', class: 'form-control input-lg', placeholder: 'Example: email@me.com', required: true
+        p class="help-block" Please enter your email address
+      = f.label :password
+      div class="controls"
+        = f.text_field :password, type: "password", :autofocus => true, :value => '', class: 'form-control input-lg', required: true
+      = f.label :password_confirmation
+      div class="controls"
+        = f.text_field :password_confirmation, type: "password", :autofocus => true, :value => '', class: 'form-control input-lg', required: true
+        p class="help-block" Please enter your password (8 characters minimum)
+    div class="actions"
+      = f.submit 'Continue', :class => 'btn btn-primary'

@@ -12,6 +12,9 @@ gem 'cocoon'
 gem 'private_pub'
 gem 'thin'
 gem 'responders'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -54,6 +57,8 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'guard-rspec'
   gem 'spring-commands-rspec'
+  gem 'letter_opener'
+  gem 'capybara-email'
 
   # Checks ruby code grammar
   gem 'rubocop', require: false

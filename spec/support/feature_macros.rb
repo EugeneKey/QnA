@@ -6,6 +6,22 @@ module FeatureMacros
     click_on 'Log in'
   end
 
+  def sign_in_facebook
+    OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new(
+      info: { email: 'test@facebook.com' },
+      provider: 'facebook',
+      uid: '123456'
+    )
+  end
+
+  def sign_in_twitter
+    OmniAuth.config.mock_auth[:twitter] = OmniAuth::AuthHash.new(
+      info: { email: nil },
+      provider: 'twitter',
+      uid: '123456'
+    )
+  end
+
   def sign_out
     visit root_path
     click_on 'Sign Out'

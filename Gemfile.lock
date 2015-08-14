@@ -61,6 +61,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-email (2.4.0)
+      capybara (~> 2.4)
+      mail
     capybara-webkit (1.6.0)
       capybara (>= 2.3.0, < 2.5.0)
       json
@@ -107,6 +110,8 @@ GEM
     factory_girl_rails (4.5.0)
       factory_girl (~> 4.5.0)
       railties (>= 3.0.0)
+    faraday (0.9.1)
+      multipart-post (>= 1.2, < 3)
     faye (1.1.1)
       cookiejar (>= 0.3.0)
       em-http-request (>= 0.3.0)
@@ -139,6 +144,7 @@ GEM
     guard-rubocop (1.2.0)
       guard (~> 2.0)
       rubocop (~> 0.20)
+    hashie (3.4.2)
     http_parser.rb (0.6.0)
     i18n (0.7.0)
     jbuilder (2.3.1)
@@ -152,8 +158,11 @@ GEM
       railties (>= 3.1.0)
       turbolinks
     json (1.8.3)
+    jwt (1.5.1)
     launchy (2.4.3)
       addressable (~> 2.3)
+    letter_opener (1.4.1)
+      launchy (~> 2.2)
     listen (3.0.2)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
@@ -167,12 +176,35 @@ GEM
     mini_portile (0.6.2)
     minitest (5.7.0)
     multi_json (1.11.2)
+    multi_xml (0.5.5)
+    multipart-post (2.0.0)
     nenv (0.2.0)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     notiffany (0.0.6)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    oauth (0.4.7)
+    oauth2 (1.0.0)
+      faraday (>= 0.8, < 0.10)
+      jwt (~> 1.0)
+      multi_json (~> 1.3)
+      multi_xml (~> 0.5)
+      rack (~> 1.2)
+    omniauth (1.2.2)
+      hashie (>= 1.2, < 4)
+      rack (~> 1.0)
+    omniauth-facebook (2.0.1)
+      omniauth-oauth2 (~> 1.2)
+    omniauth-oauth (1.1.0)
+      oauth
+      omniauth (~> 1.0)
+    omniauth-oauth2 (1.3.1)
+      oauth2 (~> 1.0)
+      omniauth (~> 1.2)
+    omniauth-twitter (1.2.1)
+      json (~> 1.3)
+      omniauth-oauth (~> 1.1)
     orm_adapter (0.5.0)
     parser (2.2.2.6)
       ast (>= 1.1, < 3.0)
@@ -317,6 +349,7 @@ DEPENDENCIES
   bootstrap-sass-extras
   byebug
   capybara
+  capybara-email
   capybara-webkit
   carrierwave
   cocoon
@@ -330,6 +363,10 @@ DEPENDENCIES
   jquery-rails
   jquery-turbolinks
   launchy
+  letter_opener
+  omniauth
+  omniauth-facebook
+  omniauth-twitter
   pg
   private_pub
   rails (= 4.2.0)
