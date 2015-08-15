@@ -2,11 +2,12 @@ h1 = @question.title
 
 p= @question.text
 .question-options
-  - if user_signed_in? and @question.user_id == current_user.id
+  - if can?(:update, @question)
     nav
       ul
         li= link_to 'Edit question', edit_question_path
-        li= link_to 'Delete question', @question, method: :delete
+        - if can?(:destroy, @question)
+          li= link_to 'Delete question', @question, method: :delete
   = render 'votes/vote', votable: @question, type: "question"
 = render 'attachments/attachments', model: @question
 .question-comments
@@ -17,7 +18,7 @@ h2 Answers
   .list-answers
     = render @question.answers
 
-- if user_signed_in?
+- if can?(:create, Answer)
   div class="center hero-unit new-answer-form"
     = form_for [@question, @answer], remote: true do |f|
       = f.label :text, 'Your answer'

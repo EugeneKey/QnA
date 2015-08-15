@@ -3,8 +3,9 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: [:show, :edit, :update, :destroy]
   before_action :load_answers, only: :show
   before_action :build_answer, only: :show
-  before_action :access_question, only: [:edit, :update, :destroy]
   after_action :publish_question, only: :create
+
+  authorize_resource
 
   include Voted
 
@@ -48,10 +49,6 @@ class QuestionsController < ApplicationController
 
   def build_answer
     @answer = @question.answers.build
-  end
-
-  def access_question
-    redirect_to root_path, notice: 'Access denied' if  @question.user_id != current_user.id
   end
 
   def publish_question

@@ -1,7 +1,8 @@
 class AttachmentsController < ApplicationController
   before_action :authenticate_user!
   before_action :load_attachment
-  before_action :access_attach
+
+  authorize_resource
 
   respond_to :js
 
@@ -13,9 +14,5 @@ class AttachmentsController < ApplicationController
 
   def load_attachment
     @attachment = Attachment.find(params[:id])
-  end
-
-  def access_attach
-    redirect_to root_path, notice: 'Access denied' if  @attachment.attachable.user_id != current_user.id
   end
 end

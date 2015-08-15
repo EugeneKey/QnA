@@ -27,9 +27,9 @@ RSpec.describe AttachmentsController, type: :controller do
           .to_not change(question.attachments, :count)
       end
 
-      it 'redirect to root patch' do
+      it 'response status error 422' do
         delete :destroy, id: attachment, format: :js
-        expect(response).to redirect_to root_path
+        expect(response.status).to eq(422)
       end
     end
 

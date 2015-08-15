@@ -2,8 +2,8 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_question, only: [:create]
   before_action :load_answer, except: [:create]
-  before_action :access_answer, only: [:update, :destroy]
-  before_action :access_best, only: [:set_best, :cancel_best]
+
+  authorize_resource
 
   respond_to :js
 
@@ -39,14 +39,6 @@ class AnswersController < ApplicationController
   def load_answer
     @answer = Answer.find(params[:id])
     @question = @answer.question
-  end
-
-  def access_answer
-    redirect_to @answer.question, notice: 'Access denied' if  @answer.user_id != current_user.id
-  end
-
-  def access_best
-    redirect_to @answer.question, notice: 'Access denied' if  @answer.question.user_id != current_user.id
   end
 
   def answer_params

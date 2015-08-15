@@ -15,6 +15,7 @@ gem 'responders'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
+gem 'cancancan'
 
 # Use postgresql as the database for Active Record
 gem 'pg'

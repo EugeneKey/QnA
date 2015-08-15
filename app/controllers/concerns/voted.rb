@@ -6,31 +6,21 @@ module Voted
   end
 
   def vote_up
-    if @votable.user != current_user
-      @vote = @votable.votes.build(user: current_user, value: 1)
-      render_vote_create
-    else
-      render json: "You don't have access for vote", status: :unprocessable_entity
-    end
+    authorize! :vote_up, @votable
+    @vote = @votable.votes.create(user: current_user, value: 1)
+    render_vote
   end
 
   def vote_down
-    if @votable.user != current_user
-      @vote = @votable.votes.build(user: current_user, value: -1)
-      render_vote_create
-    else
-      render json: "You don't have access for vote", status: :unprocessable_entity
-    end
+    authorize! :vote_down, @votable
+    @vote = @votable.votes.create(user: current_user, value: -1)
+    render_vote
   end
 
   def cancel_vote
-    @vote = @votable.vote(current_user)
-    if @vote
-      @vote.destroy
-      render json: { votable_id: @vote.votable_id, votes_sum: @votable.votes_sum, type: @vote.votable_type }
-    else
-      render json: 'You not have vote for Cancel', status: :unprocessable_entity
-    end
+    authorize! :cancel_vote, @votable
+    @vote = @votable.vote(current_user).destroy
+    render_vote
   end
 
   private
@@ -43,11 +33,7 @@ module Voted
     @votable = model_klass.find(params[:id])
   end
 
-  def render_vote_create
-    if @vote.save
-      render json: { votable_id: @vote.votable_id, votes_sum: @votable.votes_sum, type: @vote.votable_type }
-    else
-      render json: @vote.errors.full_messages.join("\n"), status: :unprocessable_entity
-    end
+  def render_vote
+    render json: { votable_id: @vote.votable_id, votes_sum: @votable.votes_sum, type: @vote.votable_type }
   end
 end

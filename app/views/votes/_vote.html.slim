@@ -1,12 +1,12 @@
 .voting id = "#{type}-vote-#{votable.id}"
   span.score=   votable.votes_sum
   - if user_signed_in?
-    span.minus style=('display:none' if votable.vote(current_user) || votable.user_id == current_user.id)
+    span.minus style=('display:none' if cannot?(:vote_down, votable))
       = link_to '-', polymorphic_path(votable, action: 'vote_down'),
                 class: "set-vote", remote: true, data: { type: :json }, method: :post
-    span.plus style=('display:none' if votable.vote(current_user) || votable.user_id == current_user.id)
+    span.plus style=('display:none' if cannot?(:vote_up, votable))
       = link_to '+', polymorphic_path(votable, action: 'vote_up'),
                 class: "set-vote", remote: true, data: { type: :json }, method: :post
-    span.cancel style=('display:none' unless votable.vote(current_user))
+    span.cancel style=('display:none' if cannot?(:cancel_vote, votable))
       = link_to 'Cancel vote', polymorphic_path(votable, action: 'cancel_vote'),
                 class: "cancel-vote", remote: true, data: { type: :json }, method: :delete

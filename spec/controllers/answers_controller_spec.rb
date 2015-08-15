@@ -90,8 +90,8 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.text).to_not eq 'new body'
       end
 
-      it 'redirect to question' do
-        expect(response).to redirect_to question
+      it 'respond status unprocessable entity' do
+        expect(response.status).to eq(422)
       end
     end
   end
@@ -158,8 +158,8 @@ RSpec.describe AnswersController, type: :controller do
         expect(question.answers.where(best_answer: true).count).to eq 0
       end
 
-      it 'redirect to question' do
-        expect(response).to redirect_to question
+      it 'respond status unprocessable entity' do
+        expect(response.status).to eq(422)
       end
     end
 
@@ -198,9 +198,9 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, id: answer, question_id: question, format: :js }.to_not change(Answer, :count)
       end
 
-      it 'redirect to question' do
+      it 'respond status unprocessable entity' do
         delete :destroy, id: answer, question_id: question, format: :js
-        expect(response).to redirect_to question
+        expect(response.status).to eq(422)
       end
     end
 
