@@ -60,7 +60,7 @@ describe 'Profile API' do
       end
 
       it 'contain users array' do
-        expect(response.body).to be_json_eql(users.to_json)
+        expect(response.body).to include_json(users.to_json)
       end
 
       it 'does no contain current_user' do
@@ -69,7 +69,7 @@ describe 'Profile API' do
 
       %w(id email created_at updated_at admin).each do |attr|
         it "contains #{attr}" do
-          expect(response.body).to be_json_eql(users[0].send(attr.to_sym).to_json).at_path("0/#{attr}")
+          expect(response.body).to be_json_eql(users[0].send(attr.to_sym).to_json).at_path("profiles/0/#{attr}")
         end
       end
 

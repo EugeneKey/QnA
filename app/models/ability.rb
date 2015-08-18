@@ -23,8 +23,6 @@ class Ability
   def user_abilities
     guest_abilities
 
-    can :manage, :profile
-
     can :create, [Question, Answer, Comment]
     can [:update, :destroy], [Question, Answer], user: user
 
@@ -45,5 +43,10 @@ class Ability
     end
 
     can :destroy, Attachment, attachable: { user: user }
+
+    # API Ability
+    can :create, [:question, :answer]
+    can :index, User
+    can :me, User, id: user.id
   end
 end

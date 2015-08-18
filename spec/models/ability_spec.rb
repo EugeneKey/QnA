@@ -30,6 +30,11 @@ describe Ability do
     it { should be_able_to :create, Question }
     it { should be_able_to :create, Answer }
 
+    it { should be_able_to :create, :question }
+    it { should be_able_to :create, :answer }
+    it { should be_able_to :index, User }
+    it { should be_able_to :me, User, id: user.id }
+
     %w(question answer).each do |model|
       context "#{model.classify}" do
         let(:resource) { create(model.to_sym, user: user) }
@@ -40,8 +45,6 @@ describe Ability do
 
         it { should be_able_to :destroy, resource, user: user }
         it { should_not be_able_to :destroy, another_resource, user: user }
-
-        it { should be_able_to :manage, :profile }
 
         context 'Attachment destroy' do
           let(:attachment) { create(:attachment, attachable: resource) }
