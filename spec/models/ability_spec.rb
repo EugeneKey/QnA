@@ -41,6 +41,8 @@ describe Ability do
         it { should be_able_to :destroy, resource, user: user }
         it { should_not be_able_to :destroy, another_resource, user: user }
 
+        it { should be_able_to :manage, :profile }
+
         context 'Attachment destroy' do
           let(:attachment) { create(:attachment, attachable: resource) }
           let(:another_attachment) { create(:attachment,  attachable: another_resource) }

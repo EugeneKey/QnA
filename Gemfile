@@ -16,6 +16,7 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'cancancan'
+gem 'doorkeeper'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -75,4 +76,5 @@ group :test do
   gem 'launchy'
   gem 'capybara-webkit'
   gem 'database_cleaner'
+  gem 'json_spec'
 end

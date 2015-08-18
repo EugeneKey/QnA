@@ -14,28 +14,45 @@ class User < ActiveRecord::Base
   has_many :authorizations, dependent: :destroy
 
   def self.find_for_oauth(auth)
-    authorization = Authorization.where(provider: auth['provider'], uid: auth['uid'].to_s).first
+    authorization = authorization_user(auth)
     return authorization.user if authorization
 
-    email = auth.info[:email]
-    return unless email.present?
+    return unless auth['info'][:email].present?
 
-    user = User.where(email: email).first
-    user = generate_user(email) unless user
+    user = find_user(auth['info']) || generate_user(auth['info'])
 
+    skip_confirm(user) if auth['provider'] == 'twitter'
     user.create_authorization(auth)
     user
   end
 
-  def create_authorization(auth)
-    authorizations.create(provider: auth.provider, uid: auth.uid)
+  def self.authorization_user(auth)
+    authorization = Authorization.where(provider: auth['provider'], uid: auth['uid'].to_s).first
+    authorization
   end
 
-  private
-
-  def self.generate_user(email)
-    password = Devise.friendly_token[0, 20]
-    user = User.create!(email: email, password: password, password_confirmation: password)
+  def self.find_user(auth_info)
+    user = User.where(email: auth_info[:email]).first
     user
+  end
+
+  def self.skip_confirm(user)
+    user.confirmed_at = nil
+    user.send_confirmation_instructions
+  end
+
+  def create_authorization(auth)
+    authorizations.create(provider: auth['provider'], uid: auth['uid'])
+  end
+
+  def self.generate_user(auth_info)
+    auth_info = generate_password(auth_info) unless auth_info[:password]
+    user = User.create!(email: auth_info[:email], password: auth_info[:password], password_confirmation: auth_info[:password_confirmation])
+    user
+  end
+
+  def self.generate_password(auth_info)
+    auth_info[:password], auth_info[:password_confirmation] = Devise.friendly_token[0, 20]
+    auth_info
   end
 end
