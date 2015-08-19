@@ -4,24 +4,14 @@ describe 'Answers API' do
   let!(:question) { create(:question) }
 
   describe 'GET /index' do
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access_token' do
-        get "/api/v1/questions/#{question.id}/answers", format: :json
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token not valid' do
-        get "/api/v1/questions/#{question.id}/answers", format: :json, access_token: '1234'
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       let!(:answers) { create_list(:answer, 2, question: question) }
       let(:answer) { answers.first }
       let(:access_token) { create(:access_token) }
 
-      before { get "/api/v1/questions/#{question.id}/answers", format: :json, access_token: access_token.token }
+      before { do_request(access_token: access_token.token) }
 
       it 'returns 200 status' do
         expect(response).to be_success
@@ -37,29 +27,23 @@ describe 'Answers API' do
         end
       end
     end
+
+    def do_request(options = {})
+      get "/api/v1/questions/#{question.id}/answers", { format: :json }.merge(options)
+    end
   end
 
   describe 'GET /show' do
     let(:answer) { create(:answer, question: question) }
 
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access_token' do
-        get "/api/v1/answers/#{answer.id}", format: :json
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token is invalid' do
-        get "/api/v1/answers/#{answer.id}", format: :json, access_token: '1234'
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       let(:access_token) { create(:access_token) }
       let!(:comment) { create(:comment, commentable: answer) }
       let!(:attachment) { create(:attachment, attachable: answer) }
 
-      before { get "/api/v1/answers/#{answer.id}", format: :json, access_token: access_token.token }
+      before { do_request(access_token: access_token.token) }
 
       it 'returns 200 status code' do
         expect(response).to be_success
@@ -85,22 +69,14 @@ describe 'Answers API' do
         end
       end
     end
+
+    def do_request(options = {})
+      get "/api/v1/answers/#{answer.id}", { format: :json }.merge(options)
+    end
   end
 
   describe 'POST /create' do
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access_token' do
-        post "/api/v1/questions/#{question.id}/answers", format: :json,
-                                                         answer: attributes_for(:answer)
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token is invalid' do
-        post "/api/v1/questions/#{question.id}/answers", format: :json,
-                                                         answer: attributes_for(:answer), access_token: '1234'
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       let(:user) { create(:user) }
@@ -108,69 +84,48 @@ describe 'Answers API' do
 
       context 'with valid attributes' do
         it 'returns 201 status code' do
-          post "/api/v1/questions/#{question.id}/answers", format: :json,
-                                                           answer: attributes_for(:answer),
-                                                           access_token: access_token.token
+          do_request(access_token: access_token.token)
           expect(response).to have_http_status :created
         end
 
         it 'saves the new answer in the database' do
-          expect do
-            post "/api/v1/questions/#{question.id}/answers", format: :json,
-                                                             answer: attributes_for(:answer),
-                                                             access_token: access_token.token
-          end.to change(Answer, :count).by(1)
+          expect { do_request(access_token: access_token.token) }.to change(Answer, :count).by(1)
         end
 
         it 'assigns created answer to the question' do
-          expect do
-            post "/api/v1/questions/#{question.id}/answers", format: :json,
-                                                             answer: attributes_for(:answer),
-                                                             access_token: access_token.token
-          end.to change(question.answers, :count).by(1)
+          expect { do_request(access_token: access_token.token) }.to change(question.answers, :count).by(1)
         end
 
         it 'assigns created answer to the user' do
-          expect do
-            post "/api/v1/questions/#{question.id}/answers", format: :json,
-                                                             answer: attributes_for(:answer),
-                                                             access_token: access_token.token
-          end.to change(user.answers, :count).by(1)
+          expect { do_request(access_token: access_token.token) }.to change(user.answers, :count).by(1)
         end
       end
 
       context 'with invalid attributes' do
         it 'returns 401 status code' do
-          post "/api/v1/questions/#{question.id}/answers", format: :json,
-                                                           answer: attributes_for(:invalid_answer),
-                                                           access_token: access_token.token
+          do_request(answer: attributes_for(:invalid_answer), access_token: access_token.token)
           expect(response).to have_http_status :unprocessable_entity
         end
 
         it 'do not save the new answer in the database' do
-          expect do
-            post "/api/v1/questions/#{question.id}/answers", format: :json,
-                                                             answer: attributes_for(:invalid_answer),
-                                                             access_token: access_token.token
-          end.to_not change(Answer, :count)
+          expect { do_request(answer: attributes_for(:invalid_answer), access_token: access_token.token) }
+            .to_not change(Answer, :count)
         end
 
         it 'do not assign created answer to the question' do
-          expect do
-            post "/api/v1/questions/#{question.id}/answers", format: :json,
-                                                             answer: attributes_for(:invalid_answer),
-                                                             access_token: access_token.token
-          end.to_not change(question.answers, :count)
+          expect { do_request(answer: attributes_for(:invalid_answer), access_token: access_token.token) }
+            .to_not change(question.answers, :count)
         end
 
         it 'do not assigns created answer to the user' do
-          expect do
-            post "/api/v1/questions/#{question.id}/answers", format: :json,
-                                                             answer: attributes_for(:invalid_answer),
-                                                             access_token: access_token.token
-          end.to_not change(user.answers, :count)
+          expect { do_request(answer: attributes_for(:invalid_answer), access_token: access_token.token) }
+            .to_not change(user.answers, :count)
         end
       end
+    end
+
+    def do_request(options = {})
+      post "/api/v1/questions/#{question.id}/answers", { format: :json, answer: attributes_for(:answer) }.merge(options)
     end
   end
 end

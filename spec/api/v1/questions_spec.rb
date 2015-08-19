@@ -2,17 +2,7 @@ require 'rails_helper'
 
 describe 'Questions API' do
   describe 'GET /index' do
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access_token' do
-        get '/api/v1/questions', format: :json
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token not valid' do
-        get '/api/v1/questions', format: :json, access_token: '1234'
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       let(:access_token) { create(:access_token) }
@@ -20,7 +10,7 @@ describe 'Questions API' do
       let(:question) { questions.first }
       let!(:answer) { create(:answer, question: question) }
 
-      before { get '/api/v1/questions', format: :json, access_token: access_token.token }
+      before { do_request(access_token: access_token.token) }
 
       it 'returns 200 status' do
         expect(response).to be_success
@@ -52,28 +42,23 @@ describe 'Questions API' do
         end
       end
     end
+
+    def do_request(options = {})
+      get '/api/v1/questions', { format: :json }.merge(options)
+    end
   end
 
   describe 'GET /show' do
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access_token' do
-        get '/api/v1/questions/1', format: :json
-        expect(response.status).to eq 401
-      end
+    let!(:question) { create(:question) }
 
-      it 'returns 401 status if access_token not valid' do
-        get '/api/v1/questions/1', format: :json, access_token: '1234'
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       let(:access_token) { create(:access_token) }
-      let!(:question) { create(:question) }
       let!(:comment) { create(:comment, commentable: question) }
       let!(:attachment) { create(:attachment, attachable: question) }
 
-      before { get "/api/v1/questions/#{question.id}", format: :json, access_token: access_token.token }
+      before { do_request(access_token: access_token.token) }
 
       it 'returns 200 status' do
         expect(response).to be_success
@@ -103,22 +88,14 @@ describe 'Questions API' do
         end
       end
     end
+
+    def do_request(options = {})
+      get "/api/v1/questions/#{question.id}", { format: :json }.merge(options)
+    end
   end
 
   describe 'POST /create' do
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access_token' do
-        post '/api/v1/questions', format: :json,
-                                  question: attributes_for(:question)
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token is invalid' do
-        post '/api/v1/questions', format: :json,
-                                  question: attributes_for(:question), access_token: '1234'
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       let(:user) { create(:user) }
@@ -126,53 +103,39 @@ describe 'Questions API' do
 
       context 'with valid attributes' do
         it 'returns 201 status code' do
-          post '/api/v1/questions', format: :json,
-                                    question: attributes_for(:question),
-                                    access_token: access_token.token
+          do_request(access_token: access_token.token)
           expect(response).to have_http_status :created
         end
 
         it 'saves the new question in the database' do
-          expect do
-            post '/api/v1/questions', format: :json,
-                                      question: attributes_for(:question),
-                                      access_token: access_token.token
-          end.to change(Question, :count).by(1)
+          expect { do_request(access_token: access_token.token) }.to change(Question, :count).by(1)
         end
 
         it 'assigns created question to the user' do
-          expect do
-            post '/api/v1/questions', format: :json,
-                                      question: attributes_for(:question),
-                                      access_token: access_token.token
-          end.to change(user.questions, :count).by(1)
+          expect { do_request(access_token: access_token.token) }.to change(user.questions, :count).by(1)
         end
       end
 
       context 'with invalid attributes' do
         it 'returns 401 status code' do
-          post '/api/v1/questions', format: :json,
-                                    question: attributes_for(:invalid_question),
-                                    access_token: access_token.token
+          do_request(question: attributes_for(:invalid_question), access_token: access_token.token)
           expect(response).to have_http_status :unprocessable_entity
         end
 
         it 'do not save the new question in the database' do
-          expect do
-            post '/api/v1/questions', format: :json,
-                                      question: attributes_for(:invalid_question),
-                                      access_token: access_token.token
-          end.to_not change(Question, :count)
+          expect { do_request(question: attributes_for(:invalid_question), access_token: access_token.token) }
+            .to_not change(Question, :count)
         end
 
         it 'do not assign created question to the user' do
-          expect do
-            post '/api/v1/questions', format: :json,
-                                      question: attributes_for(:invalid_question),
-                                      access_token: access_token.token
-          end.to_not change(user.questions, :count)
+          expect { do_request(question: attributes_for(:invalid_question), access_token: access_token.token) }
+            .to_not change(user.questions, :count)
         end
       end
+    end
+
+    def do_request(options = {})
+      post '/api/v1/questions', { format: :json, question: attributes_for(:question) }.merge(options)
     end
   end
 end

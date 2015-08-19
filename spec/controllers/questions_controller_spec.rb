@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  it_should_behave_like 'voted'
+  it_should_behave_like 'Votable'
 
   let(:user) { create(:user) }
   let(:another_user) { create(:user) }
@@ -92,6 +92,11 @@ RSpec.describe QuestionsController, type: :controller do
         post :create, question: attributes_for(:question)
         expect(response).to redirect_to new_user_session_path
       end
+
+      it 'does not send json new question through private pub' do
+        expect(PrivatePub).not_to receive(:publish_to).with('/questions/index', anything)
+        post :create, question: attributes_for(:question)
+      end
     end
 
     context 'authenticated user with valid attributes' do
@@ -109,6 +114,11 @@ RSpec.describe QuestionsController, type: :controller do
         post :create, question: attributes_for(:question)
         expect(response).to redirect_to question_path(assigns(:question))
       end
+
+      it 'send json new question through private pub' do
+        expect(PrivatePub).to receive(:publish_to).with('/questions/index', anything)
+        post :create, question: attributes_for(:question)
+      end
     end
 
     context 'authenticated user with invalid attributes' do
@@ -120,6 +130,11 @@ RSpec.describe QuestionsController, type: :controller do
       it 're-render new view' do
         post :create, question: attributes_for(:invalid_question)
         expect(response).to render_template :new
+      end
+
+      it 'does not send json new question through private pub' do
+        expect(PrivatePub).not_to receive(:publish_to).with('/questions/index', anything)
+        post :create, question: attributes_for(:invalid_question)
       end
     end
   end
