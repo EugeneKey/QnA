@@ -1,0 +1,7 @@
+<% if @subscription.errors.present? %>
+    <% @subscription.errors.full_messages.each do |message| %>
+        $('.subscription-errors').html('<%= j message %>');
+    <% end %>
+<% else %>
+    $('.subscribe').html('<a href=\"/subscriptions/<%=@subscription.id%>\" class=\"subscribe-link\" data-method=\"delete\" rel=\"nofollow\" data-remote=\"true\">Unscribe</a>');
+<% end %>

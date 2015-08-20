@@ -1,8 +1,8 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :edit, :update, :destroy]
-  before_action :load_answers, only: :show
-  before_action :build_answer, only: :show
+  before_action :load_answers, :build_answer, :load_subscription, only: :show
+
   after_action :publish_question, only: :create
 
   authorize_resource
@@ -57,5 +57,9 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :text, attachments_attributes: [:file, :done, :_destroy])
+  end
+
+  def load_subscription
+    @subscription = Subscription.where(user: current_user, question: @question).first
   end
 end

@@ -9,6 +9,7 @@ describe User do
   it { should have_many(:comments).dependent(:destroy) }
   it { should have_many(:questions).dependent(:destroy) }
   it { should have_many(:authorizations).dependent(:destroy) }
+  it { should have_many(:subscriptions).dependent(:destroy) }
 
   describe '.find_for_oauth' do
     let!(:user) { create(:user) }

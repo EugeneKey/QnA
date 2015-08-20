@@ -35,6 +35,22 @@ describe Ability do
     it { should be_able_to :index, User }
     it { should be_able_to :me, User, id: user.id }
 
+    context 'Subscription' do
+      let(:subscription) { build(:subscription) }
+      let(:question) { create(:question, user: another_user) }
+      let!(:subscribed_question) { create(:subscription, question: question, user: user) }
+      let(:subscription_to_subscribed_question) { build(:subscription, question: question) }
+      let(:question_user) { create(:question, user: user) }
+      let(:subscription_question_user) { build(:subscription, question: question_user) }
+
+      it { should be_able_to :create, subscription }
+      it { should_not be_able_to :create, subscription_to_subscribed_question }
+
+      it { should be_able_to :destroy, subscription_to_subscribed_question }
+      it { should_not be_able_to :destroy, subscription }
+      it { should_not be_able_to :destroy, subscription_question_user }
+    end
+
     %w(question answer).each do |model|
       context "#{model.classify}" do
         let(:resource) { create(model.to_sym, user: user) }

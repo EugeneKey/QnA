@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   has_many :questions, dependent: :destroy
   has_many :votes, dependent: :destroy
   has_many :authorizations, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
 
   def self.find_for_oauth(auth)
     authorization = authorization_user(auth)
@@ -54,5 +55,9 @@ class User < ActiveRecord::Base
   def self.generate_password(auth_info)
     auth_info[:password], auth_info[:password_confirmation] = Devise.friendly_token[0, 20]
     auth_info
+  end
+
+  def subscribed?(question)
+    Subscription.exists?(user: self, question: question)
   end
 end

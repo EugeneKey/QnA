@@ -44,6 +44,14 @@ class Ability
 
     can :destroy, Attachment, attachable: { user: user }
 
+    can :create, Subscription do |subscription|
+      !user.subscribed?(subscription.question)
+    end
+
+    can :destroy, Subscription do |subscription|
+      user.subscribed?(subscription.question) && user != subscription.question.user
+    end
+
     # API Ability
     can :create, [:question, :answer]
     can :index, User

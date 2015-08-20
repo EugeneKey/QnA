@@ -1,5 +1,16 @@
 h1 = @question.title
 
+.subscription
+  .subscription-errors
+  - if can?(:create, Subscription.new(question: @question))
+    .subscribe
+      = link_to 'Subscribe', question_subscriptions_path(@question),
+                class: "link-subscribe", remote: true, method: :post
+  - if @subscription && can?(:destroy, @subscription)
+    .subscribe
+      = link_to 'Unscribe', subscription_path(@subscription),
+                class: "link-subscribe", remote: true, method: :delete
+
 p= @question.text
 .question-options
   - if can?(:update, @question)

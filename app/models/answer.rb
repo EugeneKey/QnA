@@ -7,6 +7,8 @@ class Answer < ActiveRecord::Base
   belongs_to :user
   validates :text, :question_id, :user_id, presence: true
 
+  after_create :notification
+
   default_scope { order('best_answer DESC, created_at') }
 
   def set_best
@@ -18,5 +20,11 @@ class Answer < ActiveRecord::Base
 
   def cancel_best
     update!(best_answer: false)
+  end
+
+  private
+
+  def notification
+    NewAnswerNotiferJob.perform_later(self)
   end
 end
