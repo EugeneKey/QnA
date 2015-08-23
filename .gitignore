@@ -28,3 +28,7 @@ doc/
 /public/uploads
 /public/tmp
 config/secrets.yml
+
+dump.rdb
+config/*.sphinx.conf
+db/sphinx

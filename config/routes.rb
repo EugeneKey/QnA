@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   match '/users/finish_signup/new' => 'finish_signup#new', via: [:get], :as => :new_finish_signup
   match '/users/finish_signup' => 'finish_signup#create', via: [:post], :as => :finish_signup
 
+  get 'search' => 'search#index'
+
   concern :votable do
     member do
       post :vote_up
