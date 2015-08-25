@@ -28,6 +28,7 @@ gem 'thinking-sphinx'
 gem 'will_paginate', '~> 3.0.6'
 gem 'dotenv'
 gem 'dotenv-deployment', require: 'dotenv/deployment'
+gem 'therubyracer'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
