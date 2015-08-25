@@ -15,7 +15,7 @@
 # Игнорирование прочих ненужных файлов.
 database.yml
 config/private_pub.yml
-config/secrets.yml
+#config/secrets.yml
 doc/
 *.swp
 *~
@@ -28,7 +28,6 @@ doc/
 # Ignore public uploaded files
 /public/uploads
 /public/tmp
-config/secrets.yml
 
 dump.rdb
 config/*.sphinx.conf

@@ -26,6 +26,8 @@ gem 'whenever'
 gem 'mysql2'
 gem 'thinking-sphinx'
 gem 'will_paginate', '~> 3.0.6'
+gem 'dotenv'
+gem 'dotenv-deployment', require: 'dotenv/deployment'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -55,7 +57,12 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'unicorn'
 
 # Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+group :development do
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
+end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
