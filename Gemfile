@@ -29,6 +29,7 @@ gem 'mysql2'
 gem 'thinking-sphinx'
 gem 'will_paginate', '~> 3.0.6'
 gem 'therubyracer'
+gem 'unicorn'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -64,6 +65,7 @@ group :development do
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
   gem 'capistrano-sidekiq', require: false
+  gem 'capistrano3-unicorn', require: false
 end
 
 group :development, :test do
