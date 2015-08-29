@@ -30,6 +30,7 @@ gem 'thinking-sphinx'
 gem 'will_paginate', '~> 3.0.6'
 gem 'therubyracer'
 gem 'unicorn'
+gem 'redis-rails'
 
 # Use postgresql as the database for Active Record
 gem 'pg'

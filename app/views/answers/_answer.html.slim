@@ -1,9 +1,11 @@
 - if answer.persisted?
   .answer id = "answer-#{answer.id}"
-    - if answer.best_answer
-      .answer-best Best answer
-    .answer-body = answer.text
-    = render 'attachments/attachments', model: answer
+    - cache_unless current_user.try(:admin), [answer, 'text'] do
+      - if answer.best_answer
+        .answer-best Best answer
+      .answer-body = answer.text
+    - cache_unless current_user.try(:admin), [answer, 'attach'] do
+      = render 'attachments/attachments', model: answer
     .answer-options
       nav
         ul
@@ -16,16 +18,17 @@
             li= link_to 'Cancel accept answer', cancel_best_answer_path(answer),
                         class: "set-best-link", method: :patch, remote: true
           - if can?(:set_best, answer)
-              li= link_to 'Accept answer', set_best_answer_path(answer),
+            li= link_to 'Accept answer', set_best_answer_path(answer),
                         class: "set-best-link", method: :patch, remote: true
           - else
-              li= link_to 'Accept answer', set_best_answer_path(answer),
+            li= link_to 'Accept answer', set_best_answer_path(answer),
                         class: "set-best-link", method: :patch, remote: true, style: 'display:none'
 
-
-      = render 'votes/vote', votable: answer, type: "answer"
-    .answer-comments
-      = render 'comments/comments', commentable: answer
+      - cache_unless current_user.try(:admin), [answer, 'votes'] do
+        = render 'votes/vote', votable: answer, type: "answer"
+    - cache_unless current_user.try(:admin), [answer, 'comments', user_signed_in?] do
+      .answer-comments
+        = render 'comments/comments', commentable: answer
 
   - if can?(:update, answer)
     = form_for [answer], remote: true, html: {id: "edit-answer-#{answer.id}"} do |f|

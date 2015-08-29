@@ -11,6 +11,8 @@ class Question < ActiveRecord::Base
 
   after_create :subscribe_author
 
+  default_scope { order('created_at') }
+
   scope :yesterday, -> { where(created_at: Time.current.yesterday.all_day) }
 
   def subscribe_author

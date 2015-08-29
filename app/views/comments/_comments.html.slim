@@ -2,7 +2,8 @@ h3 Comments
 .comments
   ul id = "comments-list-#{commentable.class.name.underscore}-#{commentable.id}"
     - commentable.comments.each do |comment|
-      li= comment.text
+      - cache_unless current_user.try(:admin), comment do
+        li= comment.text
   - if user_signed_in?
     span= link_to 'Add comment', '', class: "add-comment-link",
                     data: {commentable_type_id: commentable.class.name.underscore + "-" + commentable.id.to_s}

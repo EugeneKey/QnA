@@ -1,7 +1,7 @@
 h1 All questions
-
-ul class="list-questions"
-  - @questions.each do |question|
-    li= link_to question.title, question
+- cache collection_cache_key_for :question do
+  ul class="list-questions"
+    - @questions.each do |question|
+      li= link_to question.title, question
 
 = subscribe_to "/questions/index"

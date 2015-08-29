@@ -1,4 +1,5 @@
-h1 = @question.title
+- cache_unless current_user.try(:admin), [@question, 'title'] do
+  h1 = @question.title
 
 .subscription
   .subscription-errors
@@ -11,7 +12,8 @@ h1 = @question.title
       = link_to 'Unscribe', subscription_path(@subscription),
                 class: "link-subscribe", remote: true, method: :delete
 
-p= @question.text
+- cache_unless current_user.try(:admin), [@question, 'text'] do
+  p= @question.text
 .question-options
   - if can?(:update, @question)
     nav
@@ -19,15 +21,19 @@ p= @question.text
         li= link_to 'Edit question', edit_question_path
         - if can?(:destroy, @question)
           li= link_to 'Delete question', @question, method: :delete
-  = render 'votes/vote', votable: @question, type: "question"
-= render 'attachments/attachments', model: @question
-.question-comments
-  = render 'comments/comments', commentable: @question
+  - cache_unless current_user.try(:admin), [@question, 'vote', user_signed_in?] do
+    = render 'votes/vote', votable: @question, type: "question"
+  - cache_unless current_user.try(:admin), [@question, 'attach'] do
+    = render 'attachments/attachments', model: @question
+- cache_unless current_user.try(:admin), [@question, 'comments', user_signed_in?] do
+  .question-comments
+    = render 'comments/comments', commentable: @question
 
-h2 Answers
-.answers data={question_id: "#{@question.id}"}
-  .list-answers
-    = render @question.answers
+- cache_unless current_user.try(:admin), [@question, 'answer', user_signed_in?] do
+  h2 Answers
+  .answers data={question_id: "#{@question.id}"}
+    .list-answers
+      = render @question.answers
 
 - if can?(:create, Answer)
   div class="center hero-unit new-answer-form"
