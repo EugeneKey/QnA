@@ -67,6 +67,7 @@ group :development do
   gem 'capistrano-rvm', require: false
   gem 'capistrano-sidekiq', require: false
   gem 'capistrano3-unicorn', require: false
+  gem 'annotate'
 end
 
 group :development, :test do

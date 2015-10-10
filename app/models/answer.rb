@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: answers
+#
+#  id          :integer          not null, primary key
+#  question_id :integer
+#  text        :text
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  user_id     :integer
+#  best_answer :boolean          default(FALSE), not null
+#
+
 class Answer < ActiveRecord::Base
   include Attachable
   include Votable

@@ -1,16 +1,17 @@
 - cache_unless current_user.try(:admin), [@question, 'title'] do
   h1 = @question.title
 
-.subscription
-  .subscription-errors
-  - if can?(:create, Subscription.new(question: @question))
-    .subscribe
-      = link_to 'Subscribe', question_subscriptions_path(@question),
-                class: "link-subscribe", remote: true, method: :post
-  - if @subscription && can?(:destroy, @subscription)
-    .subscribe
-      = link_to 'Unscribe', subscription_path(@subscription),
-                class: "link-subscribe", remote: true, method: :delete
+- cache_unless current_user.try(:admin), [@question, 'subscription', can?(:edit, @question), can?(:create, Subscription.new(question: @question))] do
+  .subscription
+    .subscription-errors
+    - if can?(:create, Subscription.new(question: @question))
+      .subscribe
+        = link_to 'Subscribe', question_subscriptions_path(@question),
+                  class: "link-subscribe", remote: true, method: :post
+    - if @subscription && can?(:destroy, @subscription)
+      .subscribe
+        = link_to 'Unscribe', subscription_path(@subscription),
+                  class: "link-subscribe", remote: true, method: :delete
 
 - cache_unless current_user.try(:admin), [@question, 'text'] do
   p= @question.text
@@ -29,7 +30,7 @@
   .question-comments
     = render 'comments/comments', commentable: @question
 
-- cache_unless current_user.try(:admin), [@question, 'answer', user_signed_in?] do
+- cache_unless user_signed_in?, [@question, 'answer'] do
   h2 Answers
   .answers data={question_id: "#{@question.id}"}
     .list-answers
