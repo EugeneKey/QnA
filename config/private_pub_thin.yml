@@ -1,0 +1,15 @@
+---
+chdir: "/home/ubuntu/project/QnA"
+environment: development
+address: 172.16.1.10
+port: 9292
+timeout: 30
+log: "/home/ubuntu/project/QnA/log/thin_private_pub.log"
+pid: tmp/pids/thin_private_pub.pid
+max_conns: 1024
+max_persistent_conns: 100
+require: []
+wait: 30
+threadpool_size: 20
+rackup: private_pub.ru
+daemonize: true

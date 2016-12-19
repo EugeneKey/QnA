@@ -1,6 +1,18 @@
 require 'rails_helper'
 RSpec.configure do |config|
+
+  headless = Headless.new
+  headless.start
+
   Capybara.javascript_driver = :webkit
+
+  at_exit do
+    headless.destroy
+  end
+
+  Capybara::Webkit.configure do |config|
+    config.allow_url("172.16.1.10")
+  end
 
   config.include FeatureMacros, type: :feature
   config.include WaitForAjax, type: :feature
@@ -22,6 +34,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each, sphinx: true) do
+    # For tests tagged with Sphinx, use deletion (or truncation)
     # Sphinx Index data when running an acceptance spec.
     DatabaseCleaner.strategy = :truncation
     index

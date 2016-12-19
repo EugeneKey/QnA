@@ -7,6 +7,17 @@ require 'capybara/email/rspec'
 require 'cancan/matchers'
 require 'sidekiq/testing'
 
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+
+class PostsControllerTest < ActionController::TestCase
+  include Devise::Test::ControllerHelpers
+end
+
 Sidekiq::Testing.fake!
 
 # Add additional requires below this line. Rails is not loaded until this point!
@@ -32,8 +43,10 @@ ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
-  config.include Devise::TestHelpers, type: :controller
   config.extend ControllerMacros, type: :controller
+
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :view
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"

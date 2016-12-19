@@ -9,10 +9,12 @@ This app based on main idea of stackowerflow: people can ask questions and creat
   - gem 'private_pub'
   - gem 'thin'
 
-**Authentication with Facebook & Twitter**
+**Authentication**
 
   - gem 'devise'
   - gem 'omniauth'
+  - gem 'omniauth-facebook'
+  - gem 'omniauth-twitter'
 
 **Authorization with Policies**
 
@@ -20,8 +22,8 @@ This app based on main idea of stackowerflow: people can ask questions and creat
 
 **App has REST API**
 
-  - gem 'doorkeeper'
   - gem 'active_model_serializers'
+  - gem 'doorkeeper'
 
 **Attach files to questions/answers**
 
@@ -87,3 +89,11 @@ This app based on main idea of stackowerflow: people can ask questions and creat
 ### Deployment instructions
 
   - cap production deploy
+
+### Development start instructions
+
+  - rails s -b ip_address
+  - rackup private_pub.ru - s thin -E development -o ip_address
+  - rake ts:start - Sphinx
+  - redis-server start
+  - sideqik -q default -q mailer

@@ -1,0 +1,9 @@
+development:
+  mysql41: 9306
+#  searchd_file_path: tmp/sphinx/dev
+#  indices_location: tmp/sphinx/dev
+
+test:
+  mysql41: 9307
+#  searchd_file_path: tmp/sphinx/test
+#  indices_location: tmp/sphinx/test

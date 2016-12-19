@@ -1,5 +1,6 @@
--if @result.empty?
-  p We didn't find anything. Try again.
+-if @result.nil? || @result.empty?
+  .search-result
+    p We didn't find anything. Try again.
 -else
   .search-result
     -@result.each do |r|
@@ -16,4 +17,4 @@
 
         -elsif r.class.name=="User"
           =r.email
-=will_paginate @result
+  =will_paginate @result

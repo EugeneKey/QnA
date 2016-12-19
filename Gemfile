@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.0'
+gem 'rails', '4.2.7'
 gem 'bootstrap-sass'
 gem 'bootstrap-sass-extras'
 gem 'slim-rails'
@@ -19,18 +19,20 @@ gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'cancancan'
 gem 'doorkeeper'
-gem 'active_model_serializers'
+gem 'active_model_serializers'#, '0.9.3'
 gem 'oj'
 gem 'oj_mimic_json'
 gem 'sidekiq'
 gem 'sinatra', '>= 1.3.0', require: nil
 gem 'whenever'
-gem 'mysql2'
+gem 'mysql2' # for install sphinx
 gem 'thinking-sphinx'
 gem 'will_paginate', '~> 3.0.6'
 gem 'therubyracer'
 gem 'unicorn'
 gem 'redis-rails'
+
+#gem 'thor', '0.19.1' # fix for 
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -68,14 +70,14 @@ group :development do
   gem 'capistrano-sidekiq', require: false
   gem 'capistrano3-unicorn', require: false
   gem 'annotate'
+  gem 'web-console', '~> 2.0'
+  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'factory_girl_rails'
   gem 'rspec-rails'
@@ -96,7 +98,13 @@ group :test do
   gem 'shoulda-matchers'
   gem 'capybara'
   gem 'launchy'
-  gem 'capybara-webkit'
+
+  gem 'capybara-webkit' # need install Qt and QtWebKit
+  # sudo apt-get install qt5-default libqt5webkit5-dev
+
+  gem 'headless' # need install xvfb
+  # sudo apt-get install xvfb 
+
   gem 'database_cleaner'
   gem 'json_spec'
 end
