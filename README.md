@@ -67,15 +67,15 @@ This app based on main idea of stackowerflow: people can ask questions and creat
 **Ready to Deploy**
 
   - gem 'capistrano'
-  - gem 'therubyracer'
 
 **Unicorn as production webserver**
 
   - gem 'unicorn'
 
-### Ruby version
+### Ruby & Rails version
 
-  - ruby 2.2.1
+  - ruby 2.4.0
+  - rails 4.2.8
 
 
 ### Services (job queues, cache servers, search engines, etc.)
@@ -83,17 +83,85 @@ This app based on main idea of stackowerflow: people can ask questions and creat
   - Postgres
   - Redis
   - Sidekiq
-  - PrivatePub(thin)
+  - WebSockets with PrivatePub(thin)
   - Sphinx
 
 ### Deployment instructions
 
   - cap production deploy
 
-### Development start instructions
+### Development instructions (how to run on local machine)
 
-  - rails s -b ip_address
-  - rackup private_pub.ru - s thin -E development -o ip_address
-  - rake ts:start - Sphinx
-  - redis-server start
-  - sideqik -q default -q mailer
+**System requirements** 
+
+- Unix like OS
+- Redis (http://redis.io)
+- Sphinx (http://sphinxsearch.com)
+- PostgreSQL (http://postgresql.org)
+- MySQL (http://mysql.com)
+
+<details>
+  <summary>[open ▾] How to check required software?</summary>
+
+```
+$ type rvm
+/home/USER/.rvm/bin/rvm
+
+$ type redis-server
+/usr/bin/redis-server
+
+$ type searchd
+/usr/bin/searchd
+
+$ type psql
+/usr/bin/psql
+
+$ type mysql
+/usr/bin/mysql
+```
+
+</details>
+
+Config files:
+
+  - config/database.yml
+  - config/private_pub.yml
+
+copy and edit this files from .sample:
+
+```  
+cp config/database.yml.sample config/database.yml
+cp config/private_pub.yml.sample config/private_pub.yml
+```  
+
+if you run app isn't on localhost (127.0.0.1) address please edit .env file:
+
+```
+IP_APP_DEV=127.0.0.1
+```
+
+initial:
+
+```
+  bundle update
+  rake db:create
+  rake db:migrate
+  rake ts:index
+```
+
+run app with `foreman`
+
+```
+foreman start -f Procfile.dev
+```  
+
+run test:
+```
+rspec
+```  
+
+**Finally App is ready to use**
+
+```
+http://localhost:3000
+```
