@@ -14,8 +14,8 @@
 
 # Игнорирование прочих ненужных файлов.
 database.yml
-config/private_pub.yml
-#config/secrets.yml
+private_pub.yml
+
 doc/
 *.swp
 *~

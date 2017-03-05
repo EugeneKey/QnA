@@ -24,4 +24,4 @@ def secure_token
   end
 end
 
-Thinknetica::Application.config.secret_key_base = secure_token
+Qna::Application.config.secret_key_base = secure_token

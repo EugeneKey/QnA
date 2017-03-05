@@ -11,7 +11,7 @@ RSpec.configure do |config|
   end
 
   Capybara::Webkit.configure do |config|
-    config.allow_url("172.16.1.10")
+    config.allow_url("*")
   end
 
   config.include FeatureMacros, type: :feature
