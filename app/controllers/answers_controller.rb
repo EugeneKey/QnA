@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_question, only: [:create]
@@ -10,7 +11,9 @@ class AnswersController < ApplicationController
   include Voted
 
   def create
-    respond_with(@answer = @question.answers.create(answer_params.merge(user: current_user)))
+    respond_with(@answer = @question.answers.create(
+      answer_params.merge(user: current_user)
+    ))
   end
 
   def update
@@ -42,6 +45,8 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:text, attachments_attributes: [:file, :done, :_destroy])
+    params.require(:answer).permit(
+      :text, attachments_attributes: [:file, :done, :_destroy]
+    )
   end
 end

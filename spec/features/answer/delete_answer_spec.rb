@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'features/acceptance_helper'
 
 feature 'Delete answer', '
@@ -14,7 +15,7 @@ feature 'Delete answer', '
     visit question_path(question)
     click_on 'Delete answer'
 
-    expect(page).to_not have_content 'Text Answer'
+    expect(page).not_to have_content 'Text Answer'
     expect(current_path).to eq question_path(question)
   end
 
@@ -22,12 +23,12 @@ feature 'Delete answer', '
     sign_in(another_user)
     visit question_path(question)
 
-    expect(page).to_not have_content 'Delete answer'
+    expect(page).not_to have_content 'Delete answer'
   end
 
   scenario 'Non-authenticated user cannot delete answer' do
     visit question_path(question)
 
-    expect(page).to_not have_content 'Delete answer'
+    expect(page).not_to have_content 'Delete answer'
   end
 end

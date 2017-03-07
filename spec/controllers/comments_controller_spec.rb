@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rails_helper'
 
 RSpec.describe CommentsController, type: :controller do
@@ -11,7 +12,10 @@ RSpec.describe CommentsController, type: :controller do
       it_behaves_like 'Commentable'
 
       def do_request(options = {})
-        post :create, { question_id: commentable, commentable: 'questions', comment: attributes_for(:comment), format: :json }.merge(options)
+        post :create, { question_id: commentable,
+                        commentable: 'questions',
+                        comment: attributes_for(:comment),
+                        format: :json }.merge(options)
       end
     end
 
@@ -21,7 +25,10 @@ RSpec.describe CommentsController, type: :controller do
       it_behaves_like 'Commentable'
 
       def do_request(options = {})
-        post :create, { answer_id: commentable, commentable: 'answers', comment: attributes_for(:comment), format: :json }.merge(options)
+        post :create, { answer_id: commentable,
+                        commentable: 'answers',
+                        comment: attributes_for(:comment),
+                        format: :json }.merge(options)
       end
     end
   end

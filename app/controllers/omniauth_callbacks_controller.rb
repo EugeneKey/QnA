@@ -1,14 +1,13 @@
+# frozen_string_literal: true
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   before_action :load_auth
   before_action :sign_in_oauth
 
   skip_authorization_check
 
-  def facebook
-  end
+  def facebook; end
 
-  def twitter
-  end
+  def twitter; end
 
   private
 
@@ -16,7 +15,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     @user = User.find_for_oauth(@auth)
     if @user && @user.persisted?
       sign_in_and_redirect @user, event: :authentication
-      set_flash_message(:notice, :success, kind: @auth['provider'].capitalize) if is_navigational_format?
+      return unless is_navigational_format?
+      set_flash_message(:notice, :success, kind: @auth['provider'].capitalize)
     else
       session['oauth_hash'] = @auth.slice(:provider, :uid)
       redirect_to new_finish_signup_path

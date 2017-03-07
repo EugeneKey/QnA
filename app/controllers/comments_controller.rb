@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :load_commentable
@@ -8,8 +9,9 @@ class CommentsController < ApplicationController
   respond_to :json
 
   def create
-    respond_with(@comment = @commentable.comments.create(comment_params.merge(user: current_user)),
-                 location: question_path(@question))
+    respond_with(@comment = @commentable.comments.create(
+      comment_params.merge(user: current_user)
+    ), location: question_path(@question))
   end
 
   private
@@ -25,7 +27,9 @@ class CommentsController < ApplicationController
   end
 
   def publish_comment
-    PrivatePub.publish_to "/questions/#{@question.id}/comments", comment: @comment.to_json if @comment.valid?
+    return unless @comment.valid?
+    PrivatePub.publish_to "/questions/#{@question.id}/comments",
+                          comment: @comment.to_json
   end
 
   def comment_params

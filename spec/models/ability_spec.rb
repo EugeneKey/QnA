@@ -1,7 +1,8 @@
+# frozen_string_literal: true
 require 'rails_helper'
 
 describe Ability do
-  subject(:ability) { Ability.new(user) }
+  subject(:ability) { described_class.new(user) }
 
   describe 'for guest' do
     let(:user) { nil }
@@ -39,11 +40,14 @@ describe Ability do
     context 'Subscription' do
       let(:subscription) { build(:subscription) }
       let(:question) { create(:question, user: another_user) }
-      let!(:subscribed_question) { create(:subscription, question: question, user: user) }
-      let(:subscription_to_subscribed_question) { build(:subscription, question: question) }
+      let(:subscription_to_subscribed_question) do
+        build(:subscription, question: question)
+      end
       let(:question_user) { create(:question, user: user) }
-      let(:subscription_question_user) { build(:subscription, question: question_user) }
-
+      let(:subscription_question_user) do
+        build(:subscription, question: question_user)
+      end
+      before { create(:subscription, question: question, user: user) }
       it { should be_able_to :create, subscription }
       it { should_not be_able_to :create, subscription_to_subscribed_question }
 
@@ -53,7 +57,7 @@ describe Ability do
     end
 
     %w(question answer).each do |model|
-      context "#{model.classify}" do
+      context model.classify.to_s do
         let(:resource) { create(model.to_sym, user: user) }
         let(:another_resource) { create(model.to_sym, user: another_user) }
 
@@ -65,15 +69,21 @@ describe Ability do
 
         context 'Attachment destroy' do
           let(:attachment) { create(:attachment, attachable: resource) }
-          let(:another_attachment) { create(:attachment,  attachable: another_resource) }
+          let(:another_attachment) {
+            create(:attachment, attachable: another_resource)
+          }
 
-          it { should be_able_to :destroy, attachment,  user: user }
-          it { should_not be_able_to :destroy, another_attachment,  user: user }
+          it { should be_able_to :destroy, attachment, user: user }
+          it { should_not be_able_to :destroy, another_attachment, user: user }
         end
 
         context 'Vote' do
-          let(:voted_another_resource) { create(:vote, user: user, votable: another_resource) }
-          let(:voted_resource) { create(:vote, user: another_user, votable: resource) }
+          let(:voted_another_resource) do
+            create(:vote, user: user, votable: another_resource)
+          end
+          let(:voted_resource) do
+            create(:vote, user: another_user, votable: resource)
+          end
 
           it { should be_able_to :vote_up, another_resource, user: user }
           it { should be_able_to :vote_down, another_resource, user: user }
@@ -94,7 +104,9 @@ describe Ability do
             voted_another_resource
             should be_able_to :cancel_vote, another_resource, user: user
           end
-          it { should_not be_able_to :cancel_vote, another_resource, user: user }
+          it do
+            should_not be_able_to :cancel_vote, another_resource, user: user
+          end
           it do
             voted_resource
             should_not be_able_to :cancel_vote, resource, user: user
@@ -106,11 +118,23 @@ describe Ability do
     context 'Best Answer' do
       let(:question) { create(:question, user: user) }
       let(:another_question) { create(:question, user: another_user) }
-      let(:not_best_answer) { create(:answer, user: user, question: another_question) }
-      let(:not_best_another_answer) { create(:answer, user: another_user, question: question) }
+      let(:not_best_answer) do
+        create(:answer, user: user, question: another_question)
+      end
+      let(:not_best_another_answer) {
+        create(:answer, user: another_user, question: question)
+      }
 
-      let(:best_answer) { create(:answer, user: user, question: another_question, best_answer: true) }
-      let(:best_another_answer) { create(:answer, user: another_user, question: question, best_answer: true) }
+      let(:best_answer) do
+        create(:answer, user: user,
+                        question: another_question,
+                        best_answer: true)
+      end
+      let(:best_another_answer) do
+        create(:answer, user: another_user,
+                        question: question,
+                        best_answer: true)
+      end
 
       it { should be_able_to :set_best, not_best_another_answer, user: user }
       it { should_not be_able_to :set_best, not_best_answer, user: user }

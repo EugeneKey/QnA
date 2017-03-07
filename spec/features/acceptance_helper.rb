@@ -1,6 +1,6 @@
+# frozen_string_literal: true
 require 'rails_helper'
 RSpec.configure do |config|
-
   headless = Headless.new
   headless.start
 
@@ -10,8 +10,8 @@ RSpec.configure do |config|
     headless.destroy
   end
 
-  Capybara::Webkit.configure do |config|
-    config.allow_url("*")
+  Capybara::Webkit.configure do |cap_config|
+    cap_config.allow_url('*')
   end
 
   config.include FeatureMacros, type: :feature

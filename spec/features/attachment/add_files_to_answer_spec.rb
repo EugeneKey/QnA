@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'features/acceptance_helper'
 
 feature 'Add files to answer', '
@@ -18,7 +19,7 @@ feature 'Add files to answer', '
   scenario 'User add file when write answer', js: true do
     within '.new_answer' do
       fill_in 'answer[text]', with: 'Some text for answer'
-      attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
+      attach_file 'File', Rails.root.join('spec', 'spec_helper.rb')
       click_on 'Create Answer'
     end
     within '.answer' do
@@ -31,10 +32,10 @@ feature 'Add files to answer', '
       fill_in 'answer[text]', with: 'Some text for answer'
       click_link 'add files'
       within '.nested-fields:first-child' do
-        attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
+        attach_file 'File', Rails.root.join('spec', 'spec_helper.rb')
       end
       within '.nested-fields:nth-child(2)' do
-        attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
+        attach_file 'File', Rails.root.join('spec', 'rails_helper.rb')
       end
       click_on 'Create'
     end
@@ -51,7 +52,7 @@ feature 'Add files to answer', '
     click_link 'Edit answer'
     within '.edit_answer' do
       click_on 'add files'
-      attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
+      attach_file 'File', Rails.root.join('spec', 'spec_helper.rb')
       click_on 'Save'
     end
     expect(page).to have_link 'spec_helper.rb'

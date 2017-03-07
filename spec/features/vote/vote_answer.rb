@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'features/acceptance_helper'
 
 feature 'Vote for the answer', '
@@ -16,9 +17,9 @@ feature 'Vote for the answer', '
     sign_in user
     visit question_path(question)
 
-    expect(page).to_not have_link '+'
-    expect(page).to_not have_link '-'
-    expect(page).to_not have_link 'Cancel vote'
+    expect(page).not_to have_link '+'
+    expect(page).not_to have_link '-'
+    expect(page).not_to have_link 'Cancel vote'
   end
 
   describe 'another authenticated user' do
@@ -39,8 +40,8 @@ feature 'Vote for the answer', '
         click_on '+'
 
         expect(page).to have_content '1'
-        expect(page).to_not have_link '+'
-        expect(page).to_not have_link '-'
+        expect(page).not_to have_link '+'
+        expect(page).not_to have_link '-'
         expect(page).to have_link 'Cancel vote'
       end
     end
@@ -50,8 +51,8 @@ feature 'Vote for the answer', '
         click_link '-'
 
         expect(page).to have_content '-1'
-        expect(page).to_not have_link '+'
-        expect(page).to_not have_link '-'
+        expect(page).not_to have_link '+'
+        expect(page).not_to have_link '-'
         expect(page).to have_link 'Cancel vote'
       end
     end
@@ -66,7 +67,7 @@ feature 'Vote for the answer', '
         expect(page).to have_content '0'
         expect(page).to have_link '+'
         expect(page).to have_link '-'
-        expect(page).to_not have_link 'Cancel vote'
+        expect(page).not_to have_link 'Cancel vote'
       end
     end
   end
@@ -74,8 +75,8 @@ feature 'Vote for the answer', '
   scenario 'non-authenticated user try to voting' do
     visit question_path(question)
 
-    expect(page).to_not have_link '+'
-    expect(page).to_not have_link '-'
-    expect(page).to_not have_link 'Cancel vote'
+    expect(page).not_to have_link '+'
+    expect(page).not_to have_link '-'
+    expect(page).not_to have_link 'Cancel vote'
   end
 end

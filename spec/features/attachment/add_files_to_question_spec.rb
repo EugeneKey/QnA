@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'features/acceptance_helper'
 
 feature 'Add files to question', '
@@ -17,7 +18,7 @@ feature 'Add files to question', '
   scenario 'User add file when asks question', js: true do
     fill_in 'Title', with: 'Test question'
     fill_in 'Text', with: 'Some text for question'
-    attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
+    attach_file 'File', Rails.root.join('spec', 'spec_helper.rb')
     click_on 'Create'
 
     expect(page).to have_link 'spec_helper.rb'
@@ -28,10 +29,10 @@ feature 'Add files to question', '
     fill_in 'Text', with: 'Some text for question'
     click_link 'add files'
     within '.nested-fields:first-child' do
-      attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
+      attach_file 'File', Rails.root.join('spec', 'spec_helper.rb')
     end
     within '.nested-fields:nth-child(2)' do
-      attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
+      attach_file 'File', Rails.root.join('spec', 'rails_helper.rb')
     end
     click_on 'Create'
 
@@ -44,7 +45,7 @@ feature 'Add files to question', '
     visit edit_question_path(question)
 
     click_on 'add files'
-    attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
+    attach_file 'File', Rails.root.join('spec', 'spec_helper.rb')
     click_on 'Update'
 
     expect(page).to have_link 'spec_helper.rb'

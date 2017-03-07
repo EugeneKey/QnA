@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 ThinkingSphinx::Index.define :answer, with: :active_record do
   # fileds
   indexes text

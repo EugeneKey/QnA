@@ -1,7 +1,8 @@
+# frozen_string_literal: true
 RSpec.shared_examples 'Commentable' do
   context 'non-authenticated user' do
     it 'does not save comment' do
-      expect { do_request }.to_not change(Comment, :count)
+      expect { do_request }.not_to change(Comment, :count)
     end
 
     it 'response status 401' do
@@ -26,7 +27,8 @@ RSpec.shared_examples 'Commentable' do
     end
 
     it 'send json array through private pub' do
-      expect(PrivatePub).to receive(:publish_to).with("/questions/#{question.id}/comments", anything)
+      expect(PrivatePub).to receive(:publish_to)
+        .with("/questions/#{question.id}/comments", anything)
       do_request
     end
   end
@@ -34,7 +36,9 @@ RSpec.shared_examples 'Commentable' do
   context 'authenticated user with invalid attributes' do
     sign_in_user
     it 'does not save comment' do
-      expect { do_request(comment: attributes_for(:invalid_comment)) }.to_not change(Comment, :count)
+      expect {
+        do_request(comment: attributes_for(:invalid_comment))
+      }.not_to change(Comment, :count)
     end
 
     it 'responds with error unprocessable entity' do
@@ -43,7 +47,8 @@ RSpec.shared_examples 'Commentable' do
     end
 
     it 'does not send json array through private pub' do
-      expect(PrivatePub).not_to receive(:publish_to).with("/questions/#{question.id}/comments", anything)
+      expect(PrivatePub).not_to receive(:publish_to)
+        .with("/questions/#{question.id}/comments", anything)
       do_request(comment: attributes_for(:invalid_comment))
     end
   end

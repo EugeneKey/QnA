@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rails_helper'
 
 RSpec.describe AttachmentsController, type: :controller do
@@ -24,7 +25,7 @@ RSpec.describe AttachmentsController, type: :controller do
       sign_in_another_user
       it 'do not deletes attachment' do
         expect { delete :destroy, id: attachment, format: :js }
-          .to_not change(question.attachments, :count)
+          .not_to change(question.attachments, :count)
       end
 
       it 'response status error 422' do
@@ -36,7 +37,7 @@ RSpec.describe AttachmentsController, type: :controller do
     context 'non-authenticated user' do
       it 'not deletes attachment' do
         expect { delete :destroy, id: attachment, format: :js }
-          .to_not change(question.attachments, :count)
+          .not_to change(question.attachments, :count)
       end
 
       it 'redirect to sign_in' do

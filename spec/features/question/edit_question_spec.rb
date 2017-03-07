@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'features/acceptance_helper'
 
 feature 'Question editing', '
@@ -13,7 +14,7 @@ feature 'Question editing', '
   scenario 'Non-authenticated user trying to edit answer' do
     visit question_path(question)
 
-    expect(page).to_not have_link 'Edit question'
+    expect(page).not_to have_link 'Edit question'
   end
 
   describe 'Author' do
@@ -32,17 +33,17 @@ feature 'Question editing', '
       fill_in 'Text', with: 'New body text his question'
       click_on 'Update'
 
-      expect(page).to_not have_content question.title
-      expect(page).to_not have_content question.text
+      expect(page).not_to have_content question.title
+      expect(page).not_to have_content question.text
       expect(page).to have_content 'New title his question'
       expect(page).to have_content 'New body text his question'
-      expect(page).to_not have_selector 'edit_question'
+      expect(page).not_to have_selector 'edit_question'
     end
   end
 
   scenario "Authenticated user try to edit other user's question" do
     sign_in another_user
     visit question_path(question)
-    expect(page).to_not have_link 'Edit question'
+    expect(page).not_to have_link 'Edit question'
   end
 end

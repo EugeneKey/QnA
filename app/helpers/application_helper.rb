@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ApplicationHelper
   def collection_cache_key_for(model)
     klass = model.to_s.capitalize.constantize

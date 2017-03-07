@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'features/acceptance_helper'
 
 feature 'Question subscription', '
@@ -14,8 +15,8 @@ feature 'Question subscription', '
   scenario 'Non-authenticated user tries to subscribe' do
     visit question_path(question)
 
-    expect(page).to_not have_link 'Subscribe'
-    expect(page).to_not have_link 'Unscribe'
+    expect(page).not_to have_link 'Subscribe'
+    expect(page).not_to have_link 'Unscribe'
   end
 
   scenario 'Authenticated user subscribes to question', js: true do
@@ -24,7 +25,7 @@ feature 'Question subscription', '
 
     click_on 'Subscribe'
 
-    expect(page).to_not have_link 'Subscribe'
+    expect(page).not_to have_link 'Subscribe'
     expect(page).to have_link 'Unscribe'
   end
 
@@ -36,14 +37,14 @@ feature 'Question subscription', '
     click_on 'Unscribe'
 
     expect(page).to have_link 'Subscribe'
-    expect(page).to_not have_link 'Unscribe'
+    expect(page).not_to have_link 'Unscribe'
   end
 
   scenario 'Author of question opens his question page' do
     sign_in(user)
     visit question_path(user_question)
 
-    expect(page).to_not have_link 'Subscribe'
-    expect(page).to_not have_link 'Unscribe'
+    expect(page).not_to have_link 'Subscribe'
+    expect(page).not_to have_link 'Unscribe'
   end
 end

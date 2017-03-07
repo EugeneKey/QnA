@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
@@ -60,7 +61,7 @@ RSpec.describe QuestionsController, type: :controller do
       before { get :new }
 
       it 'assigns a new Question to @question' do
-        expect(assigns(:question)).to_not be_a_new(Question)
+        expect(assigns(:question)).not_to be_a_new(Question)
       end
 
       it 'renders new user' do
@@ -85,7 +86,9 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'POST #create' do
     context 'non-authenticated user' do
       it 'does not save question' do
-        expect { post :create, question: attributes_for(:question) }.to_not change(Question, :count)
+        expect {
+          post :create, question: attributes_for(:question)
+        }.not_to change(Question, :count)
       end
 
       it 'redirects to user sing_in' do
@@ -94,7 +97,8 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'does not send json new question through private pub' do
-        expect(PrivatePub).not_to receive(:publish_to).with('/questions/index', anything)
+        expect(PrivatePub).not_to receive(:publish_to)
+          .with('/questions/index', anything)
         post :create, question: attributes_for(:question)
       end
     end
@@ -102,7 +106,9 @@ RSpec.describe QuestionsController, type: :controller do
     context 'authenticated user with valid attributes' do
       sign_in_user
       it 'saves the new question in the database' do
-        expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
+        expect {
+          post :create, question: attributes_for(:question)
+        }.to change(Question, :count).by(1)
       end
 
       it 'put user_id from current_user to new question' do
@@ -116,7 +122,8 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'send json new question through private pub' do
-        expect(PrivatePub).to receive(:publish_to).with('/questions/index', anything)
+        expect(PrivatePub).to receive(:publish_to)
+          .with('/questions/index', anything)
         post :create, question: attributes_for(:question)
       end
     end
@@ -124,7 +131,9 @@ RSpec.describe QuestionsController, type: :controller do
     context 'authenticated user with invalid attributes' do
       sign_in_user
       it 'does not save question' do
-        expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
+        expect {
+          post :create, question: attributes_for(:invalid_question)
+        }.not_to change(Question, :count)
       end
 
       it 're-render new view' do
@@ -133,7 +142,8 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'does not send json new question through private pub' do
-        expect(PrivatePub).not_to receive(:publish_to).with('/questions/index', anything)
+        expect(PrivatePub).not_to receive(:publish_to)
+          .with('/questions/index', anything)
         post :create, question: attributes_for(:invalid_question)
       end
     end
@@ -142,7 +152,10 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'PATCH #update' do
     sign_in_user
     context 'valid attributes' do
-      before { patch :update, id: question, question: { title: 'new title 10', text: 'new body' } }
+      before do
+        patch :update, id: question,
+                       question: { title: 'new title 10', text: 'new body' }
+      end
 
       it 'assigns the requested question to @question' do
         expect(assigns(:question)).to eq question
@@ -160,11 +173,15 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'invalid attributes' do
-      before { patch :update, id: question, question: { title: 'new wrong title', text: nil } }
+      before do
+        patch :update, id: question,
+                       question: { title: 'new wrong title', text: nil }
+      end
+
       it 'does not change question attributes' do
         question.reload
-        expect(question.title).to_not eq 'new wrong title'
-        expect(question.text).to_not eq nil
+        expect(question.title).not_to eq 'new wrong title'
+        expect(question.text).not_to eq nil
       end
 
       it 're-render edit view' do
@@ -174,12 +191,15 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'another authenticated user' do
       sign_in_another_user
-      before { patch :update, id: question, question: { title: 'new title 10', text: 'new body' } }
+      before do
+        patch :update, id: question,
+                       question: { title: 'new title 10', text: 'new body' }
+      end
 
       it 'does not changes question attributes' do
         question.reload
-        expect(question.title).to_not eq 'new title 10'
-        expect(question.text).to_not eq 'new body'
+        expect(question.title).not_to eq 'new title 10'
+        expect(question.text).not_to eq 'new body'
       end
 
       it 'redirect to root path' do
@@ -193,7 +213,9 @@ RSpec.describe QuestionsController, type: :controller do
       sign_in_user
       it 'deletes question' do
         question
-        expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+        expect {
+          delete :destroy, id: question
+        }.to change(Question, :count).by(-1)
       end
 
       it 'redirect to question' do
@@ -206,7 +228,9 @@ RSpec.describe QuestionsController, type: :controller do
       sign_in_another_user
       it 'do not deletes question' do
         question
-        expect { delete :destroy, id: question }.to_not change(Question, :count)
+        expect {
+          delete :destroy, id: question
+        }.not_to change(Question, :count)
       end
 
       it 'redirect to root path' do
@@ -218,7 +242,9 @@ RSpec.describe QuestionsController, type: :controller do
     context 'non-authenticated user' do
       it 'not deletes question' do
         question
-        expect { delete :destroy, id: question }.to_not change(Question, :count)
+        expect {
+          delete :destroy, id: question
+        }.not_to change(Question, :count)
       end
 
       it 'redirect to sign_in' do

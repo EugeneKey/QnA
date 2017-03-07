@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'features/acceptance_helper'
 
 feature 'Create question', '
@@ -27,6 +28,7 @@ feature 'Create question', '
     visit questions_path
     click_on 'Ask Question'
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page)
+      .to have_content 'You need to sign in or sign up before continuing.'
   end
 end

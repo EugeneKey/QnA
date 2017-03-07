@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class NewAnswerNotiferJob < ActiveJob::Base
   queue_as :default
 

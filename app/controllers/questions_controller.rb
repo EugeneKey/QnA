@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :edit, :update, :destroy]
@@ -21,11 +22,12 @@ class QuestionsController < ApplicationController
     respond_with(@question = Question.new)
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
-    respond_with(@question = Question.create(question_params.merge(user: current_user)))
+    respond_with(@question = Question.create(
+      question_params.merge(user: current_user)
+    ))
   end
 
   def update
@@ -52,14 +54,19 @@ class QuestionsController < ApplicationController
   end
 
   def publish_question
-    PrivatePub.publish_to '/questions/index', question: @question.to_json if @question.valid?
+    return unless @question.valid?
+    PrivatePub.publish_to '/questions/index',
+                          question: @question.to_json
   end
 
   def question_params
-    params.require(:question).permit(:title, :text, attachments_attributes: [:file, :done, :_destroy])
+    params.require(:question).permit(
+      :title, :text, attachments_attributes: [:file, :done, :_destroy]
+    )
   end
 
   def load_subscription
-    @subscription = Subscription.where(user: current_user, question: @question).first
+    @subscription = Subscription.where(user: current_user,
+                                       question: @question).first
   end
 end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'features/acceptance_helper'
 
 feature 'Add comment to question', '
@@ -25,6 +26,6 @@ feature 'Add comment to question', '
   scenario 'Non-authenticated user trying add comment', js: true do
     visit question_path(question)
 
-    expect(page).to_not have_content 'Add comment'
+    expect(page).not_to have_content 'Add comment'
   end
 end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'features/acceptance_helper'
 
 feature 'Select best answer', '
@@ -9,8 +10,12 @@ feature 'Select best answer', '
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given!(:question) { create(:question, user: user) }
-  given!(:answers) { create_list(:answer, 5, question: question, user: another_user) }
-  given(:answer_best) { create(:answer, best_answer: true, question: question, user: another_user) }
+  given!(:answers) do
+    create_list(:answer, 5, question: question, user: another_user)
+  end
+  given(:answer_best) do
+    create(:answer, best_answer: true, question: question, user: another_user)
+  end
 
   describe 'Author' do
     before do
@@ -22,7 +27,7 @@ feature 'Select best answer', '
       within "#answer-#{answers[3].id}" do
         click_on 'Accept answer'
         expect(page).to have_content 'Best answer'
-        expect(page).to_not have_content 'Accept answer'
+        expect(page).not_to have_content 'Accept answer'
         expect(page).to have_content 'Cancel accept answer'
       end
     end
@@ -32,7 +37,7 @@ feature 'Select best answer', '
       within "#answer-#{answers[4].id}" do
         click_on 'Accept answer'
         expect(page).to have_content 'Best answer'
-        expect(page).to_not have_content 'Accept answer'
+        expect(page).not_to have_content 'Accept answer'
         expect(page).to have_content 'Cancel accept answer'
       end
     end
@@ -43,9 +48,9 @@ feature 'Select best answer', '
         click_on 'Accept answer'
       end
       within "#answer-#{answer_best.id}" do
-        expect(page).to_not have_content 'Best answer'
+        expect(page).not_to have_content 'Best answer'
         expect(page).to have_content 'Accept answer'
-        expect(page).to_not have_content 'Cancel accept answer'
+        expect(page).not_to have_content 'Cancel accept answer'
       end
     end
 
@@ -56,7 +61,7 @@ feature 'Select best answer', '
       end
       within '.answer:first-child' do
         expect(page).to have_content 'Best answer'
-        expect(page).to_not have_content 'Accept answer'
+        expect(page).not_to have_content 'Accept answer'
         expect(page).to have_content 'Cancel accept answer'
         expect(page).to have_content answers[3].text
       end
@@ -66,8 +71,8 @@ feature 'Select best answer', '
       answer_best
       visit question_path(question)
       click_on 'Cancel accept answer'
-      expect(page).to_not have_content 'Best answer'
-      expect(page).to_not have_content 'Cancel accept answer'
+      expect(page).not_to have_content 'Best answer'
+      expect(page).not_to have_content 'Cancel accept answer'
     end
   end
 
@@ -78,10 +83,10 @@ feature 'Select best answer', '
       visit question_path(question)
     end
     scenario 'try to select best answer', js: true do
-      expect(page).to_not have_content 'Accept answer'
+      expect(page).not_to have_content 'Accept answer'
     end
     scenario 'try to cancel best answer', js: true do
-      expect(page).to_not have_content 'Cancel accept answer'
+      expect(page).not_to have_content 'Cancel accept answer'
     end
   end
 end

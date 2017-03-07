@@ -1,10 +1,12 @@
+# frozen_string_literal: true
 class Api::V1::QuestionsController < Api::V1::BaseController
   before_action :load_question, only: :show
 
   authorize_resource
 
   def index
-    respond_with (@questions = Question.all), each_serializer: QuestionsListSerializer
+    respond_with (@questions = Question.all),
+                 each_serializer: QuestionsListSerializer
   end
 
   def show
@@ -12,7 +14,9 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def create
-    respond_with (@question = Question.create(question_params.merge(user: current_resource_owner)))
+    respond_with @question = Question.create(
+      question_params.merge(user: current_resource_owner)
+    )
   end
 
   private

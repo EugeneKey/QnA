@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -17,12 +18,14 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
 # jquery as a the JavaScript library
 gem 'jquery-rails'
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
+# Turbolinks makes following links in your web application faster.
+# Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
+# jquery for turbolinks
 gem 'jquery-turbolinks'
 # Dynamic nested forms using jQuery
 gem 'cocoon'
-#Pagination library for Rails
+# Pagination library for Rails
 gem 'will_paginate', '~> 3.0.6'
 
 # for files uploads
@@ -32,8 +35,8 @@ gem 'remotipart'
 
 ### DATABASES & SEARCH
 # Use postgresql as the database for Active Record
-gem 'pg'
 gem 'mysql2' # for install sphinx
+gem 'pg'
 gem 'redis-rails' # for caching
 gem 'thinking-sphinx' # for search engines Sphinx
 
@@ -56,8 +59,8 @@ gem 'omniauth-twitter'
 gem 'cancancan'
 
 ### REST API
-gem 'doorkeeper'
 gem 'active_model_serializers'
+gem 'doorkeeper'
 # Optimized JSON: fast JSON parser and Object marshaller
 gem 'oj'
 gem 'oj_mimic_json'
@@ -86,7 +89,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'bcrypt', '~> 3.1.7'
 
 group :development do
-
   # Use Capistrano for deployment
   gem 'capistrano', require: false
   gem 'capistrano-bundler', require: false
@@ -106,19 +108,21 @@ group :development do
 end
 
 group :development, :test do
-
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  # Call 'byebug' anywhere in the code to stop execution
+  # and get a debugger console
   gem 'byebug'
-  
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+
+  # Spring speeds up development
+  # by keeping your application running in the background.
+  # Read more: https://github.com/rails/spring
   gem 'spring'
 
-  gem 'factory_girl_rails'
-  gem 'rspec-rails'
-  gem 'guard-rspec'
-  gem 'spring-commands-rspec'
-  gem 'letter_opener'
   gem 'capybara-email'
+  gem 'factory_girl_rails'
+  gem 'guard-rspec'
+  gem 'letter_opener'
+  gem 'rspec-rails'
+  gem 'spring-commands-rspec'
 
   # Checks ruby code grammar
   gem 'rubocop', require: false
@@ -129,16 +133,15 @@ group :development, :test do
 end
 
 group :test do
-
-  gem 'shoulda-matchers'
   gem 'capybara'
   gem 'launchy'
+  gem 'shoulda-matchers'
 
   gem 'capybara-webkit' # need install Qt and QtWebKit
   # sudo apt-get install qt5-default libqt5webkit5-dev
 
   gem 'headless' # need install xvfb
-  # sudo apt-get install xvfb 
+  # sudo apt-get install xvfb
 
   gem 'database_cleaner'
   gem 'json_spec'

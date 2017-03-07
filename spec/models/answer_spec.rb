@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
@@ -11,17 +12,17 @@ RSpec.describe Answer, type: :model do
   it { should accept_nested_attributes_for :attachments }
 
   describe 'question notifications' do
-    subject { build(:answer) }
+    subject(:answer) { build(:answer) }
 
-    it 'should call notification job after create' do
-      expect(NewAnswerNotiferJob).to receive(:perform_later).with(subject)
-      subject.save!
+    it 'calls notification job after create' do
+      expect(NewAnswerNotiferJob).to receive(:perform_later).with(answer)
+      answer.save!
     end
 
-    it 'should not call notification job after update' do
-      subject.save!
-      expect(NewAnswerNotiferJob).to_not receive(:perform_later)
-      subject.touch
+    it 'does not call notification job after update' do
+      answer.save!
+      expect(NewAnswerNotiferJob).not_to receive(:perform_later)
+      answer.update(text: 'some text for update')
     end
   end
 end

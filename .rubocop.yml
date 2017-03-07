@@ -1,18 +1,73 @@
 # This is the configuration used to check the rubocop source code.
-#inherit_from: .rubocop_todo.yml
-
-Metrics/LineLength:
-  Enabled: false
-
-Style/BlockComments:
-  Enabled: false
-
-Style/Documentation:
-  Enabled: false
+inherit_from: .rubocop_todo.yml
+require: rubocop-rspec
 
 AllCops:
+  TargetRubyVersion: 2.4
+  DisplayCopNames: true
   Exclude:
     - 'db/**/*'
     - 'config/**/*'
     - 'Guardfile'
     - 'bin/*'
+    - 'public/**/*'
+
+Rails:
+  Enabled: true
+
+# Compact style definitions Class: class Foo::Bar
+ClassAndModuleChildren:
+  EnforcedStyle: compact
+  Include:
+    - 'app/controllers/api/**/*'
+
+# disable some metrics for cancancan ability
+Metrics/AbcSize:
+  Exclude:
+    - 'app/models/ability.rb'
+
+Metrics/MethodLength:
+    Exclude:
+    - 'app/models/ability.rb'
+
+# Rspec cops
+
+Style/BlockDelimiters:
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/BlockLength:
+  Max: 250
+  Include:
+    - 'spec/**/*'
+
+RSpec/NestedGroups:
+  Max: 4
+
+RSpec/MultipleExpectations:
+  Max: 2
+
+RSpec/MultipleExpectations:
+  Max: 5
+  Include:
+    - 'spec/features/**/*'
+
+RSpec/ExampleLength:
+  Max: 20
+  Include:
+    - 'spec/features/**/*'
+
+# for shoulda-matchers
+RSpec/ImplicitExpect:
+  EnforcedStyle: should
+  Include:
+    - 'spec/models/**/*'
+
+# for PrivatePub
+RSpec/MessageSpies:
+  EnforcedStyle: receive
+
+# this cop need only for Rails 5
+HttpPositionalArguments:
+  Exclude:
+    - 'spec/**/*'

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: questions
@@ -19,7 +20,9 @@ class Question < ActiveRecord::Base
   has_many :answers, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
   validates :text, :user_id, presence: true
-  validates :title, length: { minimum: 10, maximum: 255 }, uniqueness: true, presence: true
+  validates :title, length: { minimum: 10, maximum: 255 },
+                    uniqueness: true,
+                    presence: true
 
   after_create :subscribe_author
 

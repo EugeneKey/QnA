@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'features/acceptance_helper'
 
 feature 'User can sign in via oauth' do
@@ -10,7 +11,8 @@ feature 'User can sign in via oauth' do
     click_on 'Sign in with Facebook'
 
     within '.alert' do
-      expect(page).to have_content 'Successfully authenticated from Facebook account.'
+      expect(page)
+        .to have_content 'Successfully authenticated from Facebook account.'
     end
   end
 
@@ -30,12 +32,14 @@ feature 'User can sign in via oauth' do
     current_email.click_link 'Confirm my account'
     clear_emails
 
-    expect(page).to have_content 'Your email address has been successfully confirmed.'
+    expect(page)
+      .to have_content 'Your email address has been successfully confirmed.'
     visit new_user_session_path
     click_on 'Sign in with Twitter'
 
     within '.alert' do
-      expect(page).to have_content 'Successfully authenticated from Twitter account.'
+      expect(page)
+        .to have_content 'Successfully authenticated from Twitter account.'
     end
   end
 end
@@ -59,7 +63,9 @@ feature 'User can not sign in via oauth' do
     click_on 'Sign in with Twitter'
 
     within '.alert' do
-      expect(page).to have_content 'You have to confirm your email address before continuing.'
+      expect(page)
+        .to have_content "You have to confirm your \
+                          email address before continuing."
     end
   end
 end

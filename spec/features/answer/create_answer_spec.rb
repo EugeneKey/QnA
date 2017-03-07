@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'features/acceptance_helper'
 
 feature 'Create answer to question', '
@@ -36,6 +37,6 @@ feature 'Create answer to question', '
   scenario 'Non-authenticated user trying to create answer', js: true do
     visit question_path(question)
 
-    expect(page).to_not have_content 'Create Answer'
+    expect(page).not_to have_content 'Create Answer'
   end
 end

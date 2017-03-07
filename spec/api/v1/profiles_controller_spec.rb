@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 require 'rails_helper'
 
-describe 'Profile API' do
+describe Api::V1::ProfilesController do
   let(:me) { create(:user) }
   let(:access_token) { create(:access_token, resource_owner_id: me.id) }
 
@@ -16,13 +17,15 @@ describe 'Profile API' do
 
       %w(id email created_at updated_at admin).each do |attr|
         it "contains #{attr}" do
-          expect(response.body).to be_json_eql(me.send(attr.to_sym).to_json).at_path(attr)
+          expect(response.body).to be_json_eql(
+            me.send(attr.to_sym).to_json
+          ).at_path(attr)
         end
       end
 
       %w(password encrypted_password).each do |attr|
         it "does not contain #{attr}" do
-          expect(response.body).to_not have_json_path(attr)
+          expect(response.body).not_to have_json_path(attr)
         end
       end
     end
@@ -54,13 +57,15 @@ describe 'Profile API' do
 
       %w(id email created_at updated_at admin).each do |attr|
         it "contains #{attr}" do
-          expect(response.body).to be_json_eql(users[0].send(attr.to_sym).to_json).at_path("0/#{attr}")
+          expect(response.body).to be_json_eql(
+            users[0].send(attr.to_sym).to_json
+          ).at_path("0/#{attr}")
         end
       end
 
-      %w(password, encrypted_password).each do |attr|
+      %w(password encrypted_password).each do |attr|
         it "does not contain #{attr}" do
-          expect(response.body).to_not have_json_path("0/#{attr}")
+          expect(response.body).not_to have_json_path("0/#{attr}")
         end
       end
     end

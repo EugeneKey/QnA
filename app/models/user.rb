@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -27,8 +29,9 @@ class User < ActiveRecord::Base
   before_create :skip_confirmation!
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :confirmable, omniauth_providers:
-             [:facebook, :twitter]
+         :recoverable, :rememberable, :trackable,
+         :validatable, :omniauthable, :confirmable,
+         omniauth_providers: [:facebook, :twitter]
 
   has_many :comments, dependent: :destroy
   has_many :answers, dependent: :destroy
@@ -51,12 +54,14 @@ class User < ActiveRecord::Base
   end
 
   def self.authorization_user(auth)
-    authorization = Authorization.where(provider: auth['provider'], uid: auth['uid'].to_s).first
+    authorization = Authorization.find_by(
+      provider: auth['provider'], uid: auth['uid'].to_s
+    )
     authorization
   end
 
   def self.find_user(auth_info)
-    user = User.where(email: auth_info[:email]).first
+    user = User.find_by(email: auth_info[:email])
     user
   end
 
@@ -71,12 +76,17 @@ class User < ActiveRecord::Base
 
   def self.generate_user(auth_info)
     auth_info = generate_password(auth_info) unless auth_info[:password]
-    user = User.create!(email: auth_info[:email], password: auth_info[:password], password_confirmation: auth_info[:password_confirmation])
+    user = User.create!(
+      email: auth_info[:email],
+      password: auth_info[:password],
+      password_confirmation: auth_info[:password_confirmation]
+    )
     user
   end
 
   def self.generate_password(auth_info)
-    auth_info[:password], auth_info[:password_confirmation] = Devise.friendly_token[0, 20]
+    auth_info[:password],
+    auth_info[:password_confirmation] = Devise.friendly_token[0, 20]
     auth_info
   end
 

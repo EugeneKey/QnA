@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class SubscriptionsController < ApplicationController
   before_action :authenticate_user!
   before_action :load_question, only: :create
@@ -8,7 +9,9 @@ class SubscriptionsController < ApplicationController
   respond_to :js
 
   def create
-    respond_with(@subscription = current_user.subscriptions.create(question: @question))
+    respond_with(@subscription = current_user.subscriptions.create(
+      question: @question
+    ))
   end
 
   def destroy

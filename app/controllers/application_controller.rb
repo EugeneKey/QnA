@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'application_responder'
 
 class ApplicationController < ActionController::Base
@@ -12,8 +13,12 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
-      format.html { redirect_to root_url, alert: 'Access denied: ' + exception.message }
-      format.any(:json, :js) { render nothing: true, status: :unprocessable_entity }
+      format.html do
+        redirect_to root_url, alert: 'Access denied: ' + exception.message
+      end
+      format.any(:json, :js) do
+        render nothing: true, status: :unprocessable_entity
+      end
     end
   end
 end

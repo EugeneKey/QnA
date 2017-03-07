@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Ability
   include CanCan::Ability
 
@@ -50,7 +51,8 @@ class Ability
     end
 
     can :destroy, Subscription do |subscription|
-      user.subscribed?(subscription.question) && user != subscription.question.user
+      user.subscribed?(subscription.question) &&
+        user != subscription.question.user
     end
 
     # API Ability

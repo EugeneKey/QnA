@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Api::V1::AnswersController < Api::V1::BaseController
   before_action :load_question, only: [:index, :create]
   before_action :load_answer, only: :show
@@ -13,7 +14,9 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   def create
-    respond_with(@answer = @question.answers.create(answer_params.merge(user: current_resource_owner)))
+    respond_with(@answer = @question.answers.create(
+      answer_params.merge(user: current_resource_owner)
+    ))
   end
 
   def load_question

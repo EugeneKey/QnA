@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 ThinkingSphinx::Index.define :question, with: :active_record do
   # fileds
   indexes title, sortable: true

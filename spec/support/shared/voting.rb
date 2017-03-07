@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 RSpec.shared_examples 'Votable' do
   let(:user) { create(:user) }
   let(:another_user) { create(:user) }
@@ -10,7 +11,7 @@ RSpec.shared_examples 'Votable' do
 
       context 'non-authenticated user' do
         it 'not change votes_sum' do
-          expect { patch_vote }.to_not change(Vote, :count)
+          expect { patch_vote }.not_to change(Vote, :count)
         end
 
         it 'response status error 401' do
@@ -23,7 +24,7 @@ RSpec.shared_examples 'Votable' do
         sign_in_user
 
         it 'not change votes_sum' do
-          expect { patch_vote }.to_not change(Vote, :count)
+          expect { patch_vote }.not_to change(Vote, :count)
         end
 
         it 'redirect to root path' do
@@ -42,7 +43,9 @@ RSpec.shared_examples 'Votable' do
         it 'change votes_sum' do
           vote_value = 1
           vote_value = -1 if attr == 'vote_down'
-          expect { patch_vote }.to change { votable.votes_sum }.from(0).to(vote_value)
+          expect {
+            patch_vote
+          }.to change { votable.votes_sum }.from(0).to(vote_value)
         end
 
         it 'render json success' do
@@ -56,7 +59,7 @@ RSpec.shared_examples 'Votable' do
         before { patch attr.to_sym, id: votable, format: :json }
 
         it 'does not save second vote in database' do
-          expect { patch_vote }.to_not change(Vote, :count)
+          expect { patch_vote }.not_to change(Vote, :count)
         end
 
         it 'responds with error' do
@@ -68,17 +71,21 @@ RSpec.shared_examples 'Votable' do
   end
 
   describe 'DELETE #cancel_vote' do
-    let!(:vote) { create(:vote, user: another_user, votable: votable) }
+    before { create(:vote, user: another_user, votable: votable) }
 
     context 'with user has vote' do
       sign_in_another_user
 
       it 'removes vote from database' do
-        expect { patch :cancel_vote, id: votable, format: :json }.to change(Vote, :count).by(-1)
+        expect {
+          patch :cancel_vote, id: votable, format: :json
+        }.to change(Vote, :count).by(-1)
       end
 
       it 'changes votes_sum' do
-        expect { patch :cancel_vote, id: votable, format: :json }.to change { votable.votes_sum }.from(1).to(0)
+        expect {
+          patch :cancel_vote, id: votable, format: :json
+        }.to change { votable.votes_sum }.from(1).to(0)
       end
 
       it 'responds with success' do
@@ -90,7 +97,9 @@ RSpec.shared_examples 'Votable' do
     context 'without user has vote' do
       sign_in_user
       it 'does not delete any vote from database' do
-        expect { patch :cancel_vote, id: votable, format: :json }.to_not change(Vote, :count)
+        expect {
+          patch :cancel_vote, id: votable, format: :json
+        }.not_to change(Vote, :count)
       end
 
       it 'responds with error' do

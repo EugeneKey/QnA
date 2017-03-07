@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rails_helper'
 
 RSpec.describe Question, type: :model do
@@ -14,17 +15,17 @@ RSpec.describe Question, type: :model do
   it { should accept_nested_attributes_for :attachments }
 
   describe 'subscription' do
+    subject(:question) { build(:question, user: author) }
     let(:author) { create(:user) }
-    subject { build(:question, user: author) }
 
-    it 'should subscribe author to his question after create' do
-      expect { subject.save! }.to change(author.subscriptions, :count).by(1)
+    it 'subscribes author to his question after create' do
+      expect { question.save! }.to change(author.subscriptions, :count).by(1)
     end
 
-    it 'should not subscribe after update' do
-      subject.save!
-      expect(subject).to_not receive(:subscribe_author)
-      subject.touch
+    it 'does not subscribe after update' do
+      question.save!
+      expect(question).not_to receive(:subscribe_author)
+      question.update(text: 'some text for update')
     end
   end
 end

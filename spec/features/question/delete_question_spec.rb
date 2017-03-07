@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'features/acceptance_helper'
 
 feature 'Delete question', '
@@ -15,7 +16,7 @@ Only the owner can remove the question
     click_on 'Delete question'
 
     expect(page).to have_content 'Question was successfully destroyed.'
-    expect(page).to_not have_content 'Title Question'
+    expect(page).not_to have_content 'Title Question'
     expect(current_path).to eq questions_path
   end
 
@@ -23,12 +24,12 @@ Only the owner can remove the question
     sign_in(another_user)
     visit question_path(question)
 
-    expect(page).to_not have_content 'Delete question'
+    expect(page).not_to have_content 'Delete question'
   end
 
   scenario 'Non-authenticated user cannot delete question' do
     visit question_path(question)
 
-    expect(page).to_not have_content 'Delete question'
+    expect(page).not_to have_content 'Delete question'
   end
 end

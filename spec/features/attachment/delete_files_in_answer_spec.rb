@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'features/acceptance_helper'
 
 feature 'Delete files from answer', '
@@ -28,7 +29,7 @@ feature 'Delete files from answer', '
       within '.list-answers .attachments' do
         click_on 'Delete'
 
-        expect(page).to_not have_link attachment.file.identifier
+        expect(page).not_to have_link attachment.file.identifier
       end
     end
   end
@@ -38,7 +39,7 @@ feature 'Delete files from answer', '
     visit question_path(question)
 
     within '.list-answers .attachments' do
-      expect(page).to_not have_link 'Delete'
+      expect(page).not_to have_link 'Delete'
     end
   end
 
@@ -46,7 +47,7 @@ feature 'Delete files from answer', '
     visit question_path(question)
 
     within '.list-answers .attachments' do
-      expect(page).to_not have_link 'Delete'
+      expect(page).not_to have_link 'Delete'
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: answers
@@ -10,7 +12,6 @@
 #  user_id     :integer
 #  best_answer :boolean          default(FALSE), not null
 #
-
 class Answer < ActiveRecord::Base
   include Attachable
   include Votable
@@ -26,7 +27,7 @@ class Answer < ActiveRecord::Base
 
   def set_best
     transaction do
-      question.answers.update_all(best_answer: false)
+      question.answers.find_each { |a| a.update(best_answer: false) }
       update!(best_answer: true)
     end
   end

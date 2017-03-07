@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'features/acceptance_helper'
 
 feature 'Search content', '
@@ -8,7 +9,11 @@ feature 'Search content', '
   given(:user) { create :user, email: 'testuser@mail.com' }
   given!(:question) { create :question, user: user }
   given!(:answer) { create :answer, user: user }
-  given!(:comment) { create :comment, user: user, commentable: question, commentable_type: 'Question' }
+  given!(:comment) {
+    create :comment, user: user,
+                     commentable: question,
+                     commentable_type: 'Question'
+  }
 
   scenario 'User searches all', sphinx: true do
     ThinkingSphinx::Test.run do
@@ -43,9 +48,9 @@ feature 'Search content', '
       within '.search-result' do
         expect(page).to have_content question.title
         expect(page).to have_content question.text
-        expect(page).to_not have_content answer.text
-        expect(page).to_not have_content comment.text
-        expect(page).to_not have_content user.email
+        expect(page).not_to have_content answer.text
+        expect(page).not_to have_content comment.text
+        expect(page).not_to have_content user.email
       end
     end
   end
@@ -61,11 +66,11 @@ feature 'Search content', '
       end
 
       within '.search-result' do
-        expect(page).to_not have_content question.title
-        expect(page).to_not have_content question.text
+        expect(page).not_to have_content question.title
+        expect(page).not_to have_content question.text
         expect(page).to have_content answer.text
-        expect(page).to_not have_content comment.text
-        expect(page).to_not have_content user.email
+        expect(page).not_to have_content comment.text
+        expect(page).not_to have_content user.email
       end
     end
   end
@@ -81,11 +86,11 @@ feature 'Search content', '
       end
 
       within '.search-result' do
-        expect(page).to_not have_content question.title
-        expect(page).to_not have_content question.text
-        expect(page).to_not have_content answer.text
+        expect(page).not_to have_content question.title
+        expect(page).not_to have_content question.text
+        expect(page).not_to have_content answer.text
         expect(page).to have_content comment.text
-        expect(page).to_not have_content user.email
+        expect(page).not_to have_content user.email
       end
     end
   end
@@ -101,10 +106,10 @@ feature 'Search content', '
       end
 
       within '.search-result' do
-        expect(page).to_not have_content question.title
-        expect(page).to_not have_content question.text
-        expect(page).to_not have_content answer.text
-        expect(page).to_not have_content comment.text
+        expect(page).not_to have_content question.title
+        expect(page).not_to have_content question.text
+        expect(page).not_to have_content answer.text
+        expect(page).not_to have_content comment.text
         expect(page).to have_content user.email
       end
     end

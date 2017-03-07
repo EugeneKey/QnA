@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module FeatureMacros
   def sign_in(user)
     visit new_user_session_path
@@ -47,6 +48,8 @@ module SphinxHelpers
   end
 
   def index_finished?
-    Dir[Rails.root.join(ThinkingSphinx::Test.config.indices_location, '*.{new,tmp}*')].empty?
+    Dir[Rails.root.join(
+      ThinkingSphinx::Test.config.indices_location, '*.{new,tmp}*'
+    )].empty?
   end
 end

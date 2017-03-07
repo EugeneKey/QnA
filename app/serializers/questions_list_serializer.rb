@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class QuestionsListSerializer < ActiveModel::Serializer
   attributes :id, :title, :text, :created_at, :updated_at, :short_title
   has_many :answers
