@@ -6,5 +6,5 @@
     $('#answer-<%= @answer.id %> .answer-body').html('<%= @answer.text %>');
     $('#answer-<%= @answer.id %> .attachments').html('<%= j render 'attachments/attachments', model: @answer %>');
     $('form#edit-answer-<%= @answer.id %>').hide();
-    $('#answer-<%= @answer.id %>').show();
+    $('#answer-<%= @answer.id %> .panel').show();
 <% end %>

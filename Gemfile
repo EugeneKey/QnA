@@ -26,10 +26,11 @@ gem 'jquery-turbolinks'
 # Dynamic nested forms using jQuery
 gem 'cocoon'
 # Pagination library for Rails
-gem 'will_paginate', '~> 3.0.6'
+gem 'will_paginate', '~> 3.1.1'
 
 # for files uploads
 gem 'carrierwave'
+gem 'jasny-bootstrap-rails'
 # AJAX file uploads with jQuery
 gem 'remotipart'
 

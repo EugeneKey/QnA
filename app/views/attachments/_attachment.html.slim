@@ -1,5 +1,6 @@
 .attachment id = "attachment-#{a.id}"
   = link_to a.file.filename, a.file.url
-  - if user_signed_in? and a.attachable.user_id == current_user.id
-  - if can?(:destroy, a)
-    = link_to 'Delete', a, remote: true, method: :delete
+  - if can?(:destroy, a) && editor
+    = link_to a, remote: true, method: :delete,
+          class: "delete-attach btn btn-sm", title: "delete this attachment"
+      span.glyphicon.glyphicon-remove

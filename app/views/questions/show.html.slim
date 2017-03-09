@@ -1,34 +1,41 @@
 - cache_unless current_user.try(:admin), [@question, 'title'] do
   h1 = @question.title
 
-- cache_unless current_user.try(:admin), [@question, 'subscription', can?(:edit, @question), can?(:create, Subscription.new(question: @question))] do
-  .subscription
-    .subscription-errors
-    - if can?(:create, Subscription.new(question: @question))
-      .subscribe
-        = link_to 'Subscribe', question_subscriptions_path(@question),
-                  class: "link-subscribe", remote: true, method: :post
-    - if @subscription && can?(:destroy, @subscription)
-      .subscribe
-        = link_to 'Unscribe', subscription_path(@subscription),
-                  class: "link-subscribe", remote: true, method: :delete
+.question
+  .options
+    - cache_unless current_user.try(:admin), [@question, 'vote', user_signed_in?] do
+      = render 'votes/vote', votable: @question, type: "question"
 
-- cache_unless current_user.try(:admin), [@question, 'text'] do
-  p= @question.text
-.question-options
-  - if can?(:update, @question)
-    nav
-      ul
-        li= link_to 'Edit question', edit_question_path
+    - cache_unless current_user.try(:admin), [@question, 'subscription', can?(:edit, @question), can?(:create, Subscription.new(question: @question))] do
+      .subscription
+        .subscription-errors
+        - if can?(:create, Subscription.new(question: @question))
+          .subscribe
+            = link_to question_subscriptions_path(@question),
+                  class: "subscribe-link btn btn-sm",
+                      title: "subscribe this question", method: :post, remote: true
+              span.glyphicon.glyphicon-star-empty
+        - if @subscription && can?(:destroy, @subscription)
+          .subscribe
+            = link_to subscription_path(@subscription),
+                  class: "unscribe-link btn btn-sm",
+                      title: "unscribe this question", method: :delete, remote: true
+              span.glyphicon.glyphicon-star
+  .panel
+    - cache_unless current_user.try(:admin), [@question, 'text'] do
+      .pre= @question.text
+    - cache_unless current_user.try(:admin), [@question, 'attach'] do
+      = render 'attachments/attachments', model: @question
+    .panel-footer.question-footer
+      .btn-group
+        - if can?(:update, @question)
+          = link_to 'edit', edit_question_path, class: "edit-question-link btn"
         - if can?(:destroy, @question)
-          li= link_to 'Delete question', @question, method: :delete
-  - cache_unless current_user.try(:admin), [@question, 'vote', user_signed_in?] do
-    = render 'votes/vote', votable: @question, type: "question"
-  - cache_unless current_user.try(:admin), [@question, 'attach'] do
-    = render 'attachments/attachments', model: @question
-- cache_unless current_user.try(:admin), [@question, 'comments', user_signed_in?] do
-  .question-comments
-    = render 'comments/comments', commentable: @question
+          = link_to 'delete', @question, class: "delete-question-link btn", method: :delete
+      .time asked #{@question.created_at.to_formatted_s(:db)}
+    - cache_unless current_user.try(:admin), [@question, 'comments', user_signed_in?] do
+      .question-comments
+        = render 'comments/comments', commentable: @question
 
 - cache_unless user_signed_in?, [@question, 'answer'] do
   h2 Answers
@@ -37,13 +44,17 @@
       = render @question.answers
 
 - if can?(:create, Answer)
-  div class="center hero-unit new-answer-form"
-    = form_for [@question, @answer], remote: true do |f|
-      = f.label :text, 'Your answer'
-      .answer-error
-      = f.text_area :text, class: "form-control", id: 'answer_create'
-      = render 'attachments/attachments_fields', f: f, build_attach: @answer.attachments.build
-      = f.submit 'Create Answer', class: "btn btn-primary btn-lg btn-block"
+  .panel.panel-info
+    .panel-heading
+      h3.panel-title Your Answer
+    .panel-body
+      div class="new-answer-form"
+        = form_for [@question, @answer], remote: true do |f|
+          .answer-error
+          = f.text_area :text, class: "form-control", id: 'answer_create', rows: "6"
+          = render 'attachments/attachments_fields', f: f, build_attach: @answer.attachments.build
+          .submit
+            = f.submit 'Post Your Answer', class: "btn btn-info"
 
 = subscribe_to "/questions/#{@question.id}/answers"
 = subscribe_to "/questions/#{@question.id}/comments"

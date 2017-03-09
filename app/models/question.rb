@@ -30,6 +30,8 @@ class Question < ActiveRecord::Base
 
   scope :yesterday, -> { where(created_at: Time.current.yesterday.all_day) }
 
+  self.per_page = 10
+
   def subscribe_author
     Subscription.create(question: self, user: user)
   end

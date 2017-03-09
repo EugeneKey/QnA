@@ -4,6 +4,37 @@
 
 .new_comment {
   display: none;
-  top: 20px;
   position: relative;
+}
+.comments {
+  margin-bottom: 5px;
+  ul {
+    li {
+    list-style-type:none;
+    counter-increment:li;
+    position:relative;
+    border-bottom: 1px solid #e4e6e8;
+    margin: 5px;
+    padding: 7px;
+   }
+   li:before {
+    content:counter(li, decimal) ".";
+    position:absolute;
+    left: -2.6em;
+    width: 2em;
+    text-align: right;
+    color: #b4bcc2;
+    font-size: small;
+   }
+  }
+  span {
+        padding: 5px;
+    margin: 5px;
+  }
+  .form-comment {
+    margin: 15px;
+    input[type="submit"] {
+      margin-top: 15px;
+    }
+  }
 }

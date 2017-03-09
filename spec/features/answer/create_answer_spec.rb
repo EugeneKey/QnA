@@ -16,7 +16,7 @@ feature 'Create answer to question', '
 
     within '.new_answer' do
       fill_in 'answer[text]', with: 'Some text for answer'
-      click_on 'Create Answer'
+      click_on 'Post Your Answer'
     end
 
     within '.list-answers' do
@@ -29,7 +29,7 @@ feature 'Create answer to question', '
     sign_in(user)
     visit question_path(question)
 
-    click_on 'Create Answer'
+    click_on 'Post Your Answer'
 
     expect(page).to have_content "Text can't be blank"
   end
@@ -37,6 +37,6 @@ feature 'Create answer to question', '
   scenario 'Non-authenticated user trying to create answer', js: true do
     visit question_path(question)
 
-    expect(page).not_to have_content 'Create Answer'
+    expect(page).not_to have_content 'Post Your Answer'
   end
 end

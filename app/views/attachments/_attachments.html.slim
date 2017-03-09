@@ -1,5 +1,4 @@
 .attachments
   - if model.attachments.count > 0
-    div Attachments:
-  - model.attachments.each do |a|
-    = render 'attachments/attachment', a: a
+    - model.attachments.each do |a|
+      = render 'attachments/attachment', a: a, editor: false

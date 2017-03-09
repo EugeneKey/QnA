@@ -1,39 +1,45 @@
  - cache_unless current_user.try(:admin), [answer, can?(:edit, @question), can?(:edit, answer), can?(:vote, answer)]
   - if answer.persisted?
     .answer id = "answer-#{answer.id}"
-      - cache_unless current_user.try(:admin), [answer, 'text'] do
-        - if answer.best_answer
-          .answer-best Best answer
-        .answer-body = answer.text
-      - cache_unless current_user.try(:admin), [answer, 'attach'] do
-        = render 'attachments/attachments', model: answer
-      .answer-options
-        nav
-          ul
-            li= answer.created_at
-            - if can?(:update, answer)
-              li= link_to 'Edit answer', '', class: "edit-answer-link", data: {answer_id: answer.id}
-            - if can?(:destroy, answer)
-              li= link_to 'Delete answer', answer, class: "delete-answer-link", remote: true, method: :delete
-            - if can?(:cancel_best, answer)
-              li= link_to 'Cancel accept answer', cancel_best_answer_path(answer),
-                          class: "set-best-link", method: :patch, remote: true
-            - if can?(:set_best, answer)
-              li= link_to 'Accept answer', set_best_answer_path(answer),
-                          class: "set-best-link", method: :patch, remote: true
-            - else
-              li= link_to 'Accept answer', set_best_answer_path(answer),
-                          class: "set-best-link", method: :patch, remote: true, style: 'display:none'
-
+      .answer-opt
         - cache_unless current_user.try(:admin), [answer, 'votes'] do
           = render 'votes/vote', votable: answer, type: "answer"
-      - cache_unless current_user.try(:admin), [answer, 'comments', user_signed_in?] do
-        .answer-comments
-          = render 'comments/comments', commentable: answer
+        span.accept style=('display:none' if !answer.best_answer && cannot?(:set_best, answer))
+          - if can?(:set_best, answer)
+            = link_to set_best_answer_path(answer),
+                  class: "set-best btn btn-sm",
+                      title: "set this answer the best", method: :patch, remote: true
+              span.glyphicon.glyphicon-ok
+          - else
+            = link_to cancel_best_answer_path(answer),
+                  class: "#{'cancel-best' if can?(:cancel_best, answer)} btn btn-sm #{'disabled' if cannot?(:cancel_best, answer)}",
+                      title: "remove label the best from this answer", method: :patch, remote: true
+              span.glyphicon.glyphicon-ok
+      .panel.panel-default
+        - cache_unless current_user.try(:admin), [answer, 'text'] do
+          - if answer.best_answer
+            .panel-heading-best
+              h3.panel-title Best answer
+          .panel-body.answer-body.pre = answer.text
+        - cache_unless current_user.try(:admin), [answer, 'attach'] do
+          = render 'attachments/attachments', model: answer
+        .panel-footer.answer-footer
+          .btn-group
+            - if can?(:update, answer)
+              = link_to 'edit', '', title: 'edit answer', class: "edit-answer-link btn", data: {answer_id: answer.id}
+            - if can?(:destroy, answer)
+              = link_to 'delete', answer, title: 'delete answer', class: "delete-answer-link btn", remote: true, method: :delete
+          .time answered #{answer.created_at.to_formatted_s(:db)}
 
-    - if can?(:update, answer)
-      = form_for [answer], remote: true, html: {id: "edit-answer-#{answer.id}"} do |f|
-        = f.label :text, 'Edit your answer:'
-        = f.text_area :text, class: "form-control"
-        = render 'attachments/attachments_fields', f: f
-        = f.submit 'Save', class: "btn btn-primary btn-lg btn-block"
+        - cache_unless current_user.try(:admin), [answer, 'comments', user_signed_in?] do
+          .answer-comments
+            = render 'comments/comments', commentable: answer
+
+      - if can?(:update, answer)
+        = form_for [answer], remote: true, html: {id: "edit-answer-#{answer.id}"} do |f|
+          = f.label :text, 'Edit your answer:'
+          = f.text_area :text, class: "form-control", rows: "6"
+          .form-footer
+            = render 'attachments/attachments_fields', f: f
+            .submit
+              = f.submit 'Save', class: "btn btn-info"

@@ -19,13 +19,13 @@ feature 'Answer editing', '
     end
 
     scenario 'sees link to edit his answer' do
-      within '.answer-options' do
-        expect(page).to have_link 'Edit answer'
+      within '.answer-footer' do
+        expect(page).to have_css('a.edit-answer-link')
       end
     end
 
     scenario 'try to edit his answer', js: true do
-      click_on 'Edit answer'
+      page.find('.edit-answer-link').trigger('click')
       within '.answers' do
         fill_in 'Edit your answer:', with: 'Edited answer'
         click_on 'Save'
@@ -40,12 +40,12 @@ feature 'Answer editing', '
   scenario "Authenticated user try to edit other user's answer" do
     sign_in another_user
     visit question_path(question)
-    expect(page).not_to have_link 'Edit answer'
+    expect(page).not_to have_css('a.edit-answer-link')
   end
 
   scenario 'Non-authenticated user trying to edit answer' do
     visit question_path(question)
 
-    expect(page).not_to have_link 'Edit answer'
+    expect(page).not_to have_css('a.edit-answer-link')
   end
 end

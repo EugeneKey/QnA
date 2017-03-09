@@ -3,5 +3,5 @@
         $('.subscription-errors').html('<%= j message %>');
     <% end %>
 <% else %>
-    $('.subscribe').html('<a href=\"/subscriptions/<%=@subscription.id%>\" class=\"subscribe-link\" data-method=\"delete\" rel=\"nofollow\" data-remote=\"true\">Unscribe</a>');
+    $('.subscribe').html('<a href=\"/subscriptions/<%=@subscription.id%>\"class=\"unscribe-link btn btn-sm\" title=\"unscribe this question\" data-method=\"delete\" rel=\"nofollow\" data-remote=\"true\"><span class=\"glyphicon glyphicon-star\"</span></a>');
 <% end %>

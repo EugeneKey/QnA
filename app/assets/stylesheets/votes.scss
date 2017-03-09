@@ -1,7 +1,24 @@
 // Place all the styles related to the Votes controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-.voting span {
-  margin-left: 10px;
-  font-weight: bold;
+.voting {
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+    span {
+      text-align: center;
+      font-weight: bold;
+      width: 35px;
+      a.btn.disabled {
+        color: #2c3e50;
+      }
+      a:hover {
+        color: #128f76;
+      }
+      .btn {
+        padding: 0px;
+        font-weight: bold;
+        font-size: large;
+      }
+    }
 }

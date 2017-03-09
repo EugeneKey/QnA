@@ -13,7 +13,7 @@ feature 'Delete answer', '
   scenario 'Authenticated user delete own answer', js: true do
     sign_in(user)
     visit question_path(question)
-    click_on 'Delete answer'
+    page.find('.delete-answer-link').trigger('click')
 
     expect(page).not_to have_content 'Text Answer'
     expect(current_path).to eq question_path(question)
@@ -23,12 +23,12 @@ feature 'Delete answer', '
     sign_in(another_user)
     visit question_path(question)
 
-    expect(page).not_to have_content 'Delete answer'
+    expect(page).not_to have_css('a.delete-answer-link')
   end
 
   scenario 'Non-authenticated user cannot delete answer' do
     visit question_path(question)
 
-    expect(page).not_to have_content 'Delete answer'
+    expect(page).not_to have_css('a.delete-answer-link')
   end
 end

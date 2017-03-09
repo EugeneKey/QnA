@@ -1,9 +1,9 @@
-p Attachments:
+//p Attachments:
 .attachments-fields
   = f.fields_for :attachments do |a|
     - if a.object.new_record?
       = render 'attachments/attachment_fields', f: a
     - else
-      = render 'attachments/attachment', a: a.object
+      = render 'attachments/attachment', a: a.object, editor: true
   .links
-    = link_to_add_association 'add files', f, :attachments, partial: 'attachments/attachment_fields'
+    = link_to_add_association 'add more files', f, :attachments, partial: 'attachments/attachment_fields'

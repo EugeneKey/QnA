@@ -20,7 +20,7 @@ feature 'Add files to answer', '
     within '.new_answer' do
       fill_in 'answer[text]', with: 'Some text for answer'
       attach_file 'File', Rails.root.join('spec', 'spec_helper.rb')
-      click_on 'Create Answer'
+      click_on 'Post Your Answer'
     end
     within '.answer' do
       expect(page).to have_link 'spec_helper.rb'
@@ -30,14 +30,14 @@ feature 'Add files to answer', '
   scenario 'User add several files when write answer', js: true do
     within '.new-answer-form' do
       fill_in 'answer[text]', with: 'Some text for answer'
-      click_link 'add files'
+      click_link 'add more files'
       within '.nested-fields:first-child' do
         attach_file 'File', Rails.root.join('spec', 'spec_helper.rb')
       end
       within '.nested-fields:nth-child(2)' do
         attach_file 'File', Rails.root.join('spec', 'rails_helper.rb')
       end
-      click_on 'Create'
+      click_on 'Post Your Answer'
     end
 
     within '.answer' do
@@ -49,9 +49,9 @@ feature 'Add files to answer', '
   scenario 'User add file while editing existing answer', js: true do
     answer
     visit question_path(question)
-    click_link 'Edit answer'
+    page.find('.edit-answer-link').trigger('click')
     within '.edit_answer' do
-      click_on 'add files'
+      click_on 'add more files'
       attach_file 'File', Rails.root.join('spec', 'spec_helper.rb')
       click_on 'Save'
     end

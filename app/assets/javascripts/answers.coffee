@@ -7,4 +7,4 @@ $ ->
     e.preventDefault();
     answer_id = $(this).data('answerId')
     $('form#edit-answer-' + answer_id).show()
-    $('#answer-' + answer_id).hide()
+    $('#answer-' + answer_id).find('.panel').hide()

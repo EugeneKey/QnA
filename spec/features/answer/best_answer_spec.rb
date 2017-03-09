@@ -25,44 +25,44 @@ feature 'Select best answer', '
 
     scenario 'try to select best answer', js: true do
       within "#answer-#{answers[3].id}" do
-        click_on 'Accept answer'
+        click_on 'set this answer the best'
         expect(page).to have_content 'Best answer'
-        expect(page).not_to have_content 'Accept answer'
-        expect(page).to have_content 'Cancel accept answer'
+        expect(page).not_to have_css('a.set-best')
+        expect(page).to have_css('a.cancel-best')
       end
     end
 
     scenario 'try to select another best answer', js: true do
       answer_best
       within "#answer-#{answers[4].id}" do
-        click_on 'Accept answer'
+        click_on 'set this answer the best'
         expect(page).to have_content 'Best answer'
-        expect(page).not_to have_content 'Accept answer'
-        expect(page).to have_content 'Cancel accept answer'
+        expect(page).not_to have_css('a.set-best')
+        expect(page).to have_css('a.cancel-best')
       end
     end
 
     scenario 'select best answers but best answer is only one', js: true do
       answer_best
       within "#answer-#{answers[4].id}" do
-        click_on 'Accept answer'
+        click_on 'set this answer the best'
       end
       within "#answer-#{answer_best.id}" do
         expect(page).not_to have_content 'Best answer'
-        expect(page).to have_content 'Accept answer'
-        expect(page).not_to have_content 'Cancel accept answer'
+        expect(page).to have_css('a.set-best')
+        expect(page).not_to have_css('a.cancel-best')
       end
     end
 
     scenario 'select best answer and this answer became the first', js: true do
       within "#answer-#{answers[3].id}" do
-        click_on 'Accept answer'
+        click_on 'set this answer the best'
         expect(page).to have_content 'Best answer'
       end
       within '.answer:first-child' do
         expect(page).to have_content 'Best answer'
-        expect(page).not_to have_content 'Accept answer'
-        expect(page).to have_content 'Cancel accept answer'
+        expect(page).not_to have_css('a.set-best')
+        expect(page).to have_css('a.cancel-best')
         expect(page).to have_content answers[3].text
       end
     end
@@ -70,9 +70,11 @@ feature 'Select best answer', '
     scenario 'cancel best answer', js: true do
       answer_best
       visit question_path(question)
-      click_on 'Cancel accept answer'
+      within '.answer:first-child' do
+        click_on 'remove label the best from this answer'
+        expect(page).not_to have_css('a.cancel-best')
+      end
       expect(page).not_to have_content 'Best answer'
-      expect(page).not_to have_content 'Cancel accept answer'
     end
   end
 
@@ -83,10 +85,10 @@ feature 'Select best answer', '
       visit question_path(question)
     end
     scenario 'try to select best answer', js: true do
-      expect(page).not_to have_content 'Accept answer'
+      expect(page).not_to have_css('a.set-best')
     end
     scenario 'try to cancel best answer', js: true do
-      expect(page).not_to have_content 'Cancel accept answer'
+      expect(page).not_to have_css('a.cancel-best')
     end
   end
 end

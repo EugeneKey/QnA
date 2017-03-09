@@ -1,12 +1,15 @@
 .voting id = "#{type}-vote-#{votable.id}"
-  span.score=   votable.votes_sum
-  - if user_signed_in?
-    span.minus style=('display:none' if cannot?(:vote_down, votable))
-      = link_to '-', polymorphic_path(votable, action: 'vote_down'),
-                class: "set-vote", remote: true, data: { type: :json }, method: :post
-    span.plus style=('display:none' if cannot?(:vote_up, votable))
-      = link_to '+', polymorphic_path(votable, action: 'vote_up'),
-                class: "set-vote", remote: true, data: { type: :json }, method: :post
-    span.cancel style=('display:none' if cannot?(:cancel_vote, votable))
-      = link_to 'Cancel vote', polymorphic_path(votable, action: 'cancel_vote'),
-                class: "cancel-vote", remote: true, data: { type: :json }, method: :delete
+  span.plus
+    = link_to polymorphic_path(votable, action: 'vote_up'),
+        class: "set-vote btn btn-sm #{'disabled' if cannot?(:vote_up, votable)} #{'disabled' if !user_signed_in?}",
+          title: "voting up for this #{type}", remote: true, data: { type: :json }, method: :post
+      span.glyphicon.glyphicon-chevron-up
+  span.cancel
+    = link_to votable.votes_sum, polymorphic_path(votable, action: 'cancel_vote'),
+        class: "cancel-vote btn btn-sm #{'disabled' if cannot?(:cancel_vote, votable)}",
+          title: "remove your vote", remote: true, data: { type: :json }, method: :delete
+  span.minus
+    = link_to polymorphic_path(votable, action: 'vote_down'),
+        class: "set-vote btn btn-sm #{'disabled' if cannot?(:vote_down, votable)} #{'disabled' if !user_signed_in?}",
+          title: "voting down for this #{type}", remote: true, data: { type: :json }, method: :post
+      span.glyphicon.glyphicon-chevron-down

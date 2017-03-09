@@ -13,7 +13,7 @@ Only the owner can remove the question
     sign_in(user)
 
     visit question_path(question)
-    click_on 'Delete question'
+    page.find('a.delete-question-link').click
 
     expect(page).to have_content 'Question was successfully destroyed.'
     expect(page).not_to have_content 'Title Question'
@@ -24,12 +24,12 @@ Only the owner can remove the question
     sign_in(another_user)
     visit question_path(question)
 
-    expect(page).not_to have_content 'Delete question'
+    expect(page).not_to have_css('a.delete-question-link')
   end
 
   scenario 'Non-authenticated user cannot delete question' do
     visit question_path(question)
 
-    expect(page).not_to have_content 'Delete question'
+    expect(page).not_to have_css('a.delete-question-link')
   end
 end

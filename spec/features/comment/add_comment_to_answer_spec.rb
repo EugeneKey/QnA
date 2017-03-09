@@ -16,7 +16,7 @@ feature 'Add comment to answer', '
     visit question_path(question)
 
     within '.answer .answer-comments' do
-      click_on 'Add comment'
+      click_on 'add a comment'
       fill_in 'comment[text]', with: 'Some text for comment'
       click_on 'Create comment'
     end
@@ -29,6 +29,6 @@ feature 'Add comment to answer', '
   scenario 'Non-authenticated user trying add comment', js: true do
     visit question_path(question)
 
-    expect(page).not_to have_content 'Add comment'
+    expect(page).not_to have_content 'add a comment'
   end
 end

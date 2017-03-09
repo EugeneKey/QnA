@@ -19,7 +19,7 @@ feature 'Add files to question', '
     fill_in 'Title', with: 'Test question'
     fill_in 'Text', with: 'Some text for question'
     attach_file 'File', Rails.root.join('spec', 'spec_helper.rb')
-    click_on 'Create'
+    click_on 'Post Your Question'
 
     expect(page).to have_link 'spec_helper.rb'
   end
@@ -27,14 +27,14 @@ feature 'Add files to question', '
   scenario 'User add several files when asks question', js: true do
     fill_in 'Title', with: 'Test question'
     fill_in 'Text', with: 'Some text for question'
-    click_link 'add files'
+    click_link 'add more files'
     within '.nested-fields:first-child' do
       attach_file 'File', Rails.root.join('spec', 'spec_helper.rb')
     end
     within '.nested-fields:nth-child(2)' do
       attach_file 'File', Rails.root.join('spec', 'rails_helper.rb')
     end
-    click_on 'Create'
+    click_on 'Post Your Question'
 
     expect(page).to have_link 'spec_helper.rb'
     expect(page).to have_link 'rails_helper.rb'
@@ -44,9 +44,8 @@ feature 'Add files to question', '
     question
     visit edit_question_path(question)
 
-    click_on 'add files'
     attach_file 'File', Rails.root.join('spec', 'spec_helper.rb')
-    click_on 'Update'
+    click_on 'Update Your Question'
 
     expect(page).to have_link 'spec_helper.rb'
   end

@@ -1,5 +1,10 @@
 .nested-fields
   .field
-    = f.label :file
-    = f.file_field :file
-  = link_to_remove_association "remove file", f
+    .fileinput.fileinput-new data-provides="fileinput"
+      span.btn.btn-sm.btn-success.btn-file
+        span.fileinput-new Select
+        span.fileinput-exists Change
+        = f.label :file
+        = f.file_field :file
+      span.fileinput-filename
+      a.close.fileinput-exists data-dismiss="fileinput" href="#" style=("float: none")  &times;

@@ -14,6 +14,7 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require jquery.remotipart
+//= require jasny-bootstrap.min
 //= require private_pub
 //= require bootstrap-sprockets
 //= require cocoon

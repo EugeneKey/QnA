@@ -1,18 +1,17 @@
 // Place all the styles related to the Questions controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-input[type="submit"] {
-  margin: 20px 0px;
-}
 
-.question-options, .answer-options {
-  height: 50px;
-  ul {
+.question-footer {
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+  .btn-group {
     float: right;
-    list-style: none;
-    li {
-      float: left;
-      margin-left: 10px;
+    .btn {
+      padding: 0;
+      border: 0;
+      margin-right: 15px;
     }
   }
 }
@@ -24,6 +23,93 @@ input[type="submit"] {
   }
 }
 
-.subscribe {
-  float: right;
+.question {
+  display: flex;
+  .panel {
+    flex-grow: 5;
+  }
+  .subscription {
+    .subscribe-link {
+      color: #2c3e50;
+      opacity: 0.65;
+    }
+    .subscribe-link:hover {
+      color: #128f76;
+      opacity: 1;
+    }
+    .unscribe-link:hover {
+      color: #2c3e50;
+      opacity: 0.65
+    }
+    a {
+      padding: 6px;
+      font-weight: bold;
+      font-size: x-large;
+    }
+  }
+}
+
+.pre {
+  white-space: pre-line;
+}
+.question-summary {
+    padding: 12px 0 10px 0;
+    border-bottom: 1px solid #e4e6e8;
+    .question-title {
+      margin-bottom: 10px;
+    }
+    .question-text {
+      margin: 0 10px;
+      margin-bottom: 10px;
+    }
+}
+
+.pagination {
+  display: inline-block;
+  padding-left: 0;
+  margin: 21px 0;
+  border-radius: 4px;
+}
+.pagination > li {
+  display: inline;
+}
+.pagination > a,
+.pagination > em,
+.pagination > span {
+  position: relative;
+  float: left;
+  padding: 10px 15px;
+  line-height: 1.42857143;
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #18bc9c;
+  border: 1px solid transparent;
+  margin-left: -1px;
+}
+
+.pagination > a:hover,
+.pagination > a:focus {
+  z-index: 2;
+  color: #ffffff;
+  background-color: #0f7864;
+  border-color: transparent;
+}
+.pagination > .current,
+.pagination > .current:hover,
+.pagination > .current:focus {
+  z-index: 3;
+  color: #ffffff;
+  background-color: #0f7864;
+  border-color: transparent;
+  cursor: default;
+}
+
+.pagination > .disabled,
+.pagination > .disabled:hover,
+.pagination > .disabled:focus {
+  display: none;
+  color: #ecf0f1;
+  background-color: #3be6c4;
+  border-color: transparent;
+  cursor: not-allowed;
 }

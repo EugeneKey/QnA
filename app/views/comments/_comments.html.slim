@@ -1,14 +1,15 @@
-h3 Comments
 .comments
   ul id = "comments-list-#{commentable.class.name.underscore}-#{commentable.id}"
     - commentable.comments.each do |comment|
       - cache_unless current_user.try(:admin), comment do
-        li= comment.text
+        li
+          .pre= comment.text
   - if user_signed_in?
-    span= link_to 'Add comment', '', class: "add-comment-link",
+    span= link_to 'add a comment', '', class: "add-comment-link",
                     data: {commentable_type_id: commentable.class.name.underscore + "-" + commentable.id.to_s}
-    = form_for [commentable, commentable.comments.new], remote: true, data: { type: :json },
-               html: {id: "add-comment-#{commentable.class.name.underscore}-#{commentable.id}"} do |f|
-      = f.label :text, 'Your comment'
-      = f.text_area :text, class: "form-control"
-      = f.submit 'Create comment', class: "btn btn-primary btn-lg btn-block"
+    .form-comment
+      = form_for [commentable, commentable.comments.new], remote: true, data: { type: :json },
+                 html: {id: "add-comment-#{commentable.class.name.underscore}-#{commentable.id}"} do |f|
+        = f.label :text, 'Your comment'
+        = f.text_area :text, class: "form-control"
+        = f.submit 'Create comment', class: "btn btn-primary"

@@ -17,7 +17,7 @@ feature 'Create question', '
     click_on 'Ask Question'
     fill_in 'Title', with: 'Test question'
     fill_in 'Text', with: 'Some text for question'
-    click_on 'Create'
+    click_on 'Post Your Question'
 
     expect(page).to have_content 'Question was successfully created.'
     expect(page).to have_content 'Some text for question'

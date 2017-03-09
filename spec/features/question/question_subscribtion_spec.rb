@@ -15,18 +15,18 @@ feature 'Question subscription', '
   scenario 'Non-authenticated user tries to subscribe' do
     visit question_path(question)
 
-    expect(page).not_to have_link 'Subscribe'
-    expect(page).not_to have_link 'Unscribe'
+    expect(page).not_to have_css('.subscribe-link')
+    expect(page).not_to have_css('.unscribe-link')
   end
 
   scenario 'Authenticated user subscribes to question', js: true do
     sign_in(user)
     visit question_path(question)
 
-    click_on 'Subscribe'
+    page.find('a.subscribe-link').trigger('click')
 
-    expect(page).not_to have_link 'Subscribe'
-    expect(page).to have_link 'Unscribe'
+    expect(page).not_to have_css('.subscribe-link')
+    expect(page).to have_css('.unscribe-link')
   end
 
   scenario 'Authenticated user unscribes to question', js: true do
@@ -34,17 +34,18 @@ feature 'Question subscription', '
     sign_in(user)
 
     visit question_path(question)
-    click_on 'Unscribe'
 
-    expect(page).to have_link 'Subscribe'
-    expect(page).not_to have_link 'Unscribe'
+    page.find('a.unscribe-link').trigger('click')
+
+    expect(page).to have_css('.subscribe-link')
+    expect(page).not_to have_css('.unscribe-link')
   end
 
   scenario 'Author of question opens his question page' do
     sign_in(user)
     visit question_path(user_question)
 
-    expect(page).not_to have_link 'Subscribe'
-    expect(page).not_to have_link 'Unscribe'
+    expect(page).not_to have_css('.subscribe-link')
+    expect(page).not_to have_css('.unscribe-link')
   end
 end
