@@ -1,5 +1,5 @@
-web: bundle exec thin -a $IP_APP_DEV -p 3000 -P tmp/pids/thin_rails_server.pid -l log/thin_rails_server.log start
-private_pub: bundle exec thin -R private_pub.ru -p 9292 -a $IP_APP_DEV -P tmp/pids/thin_private_pub.pid -l log/thin_private_pub.log start
-private_pub_test: rackup private_pub.ru -s thin -E production -p 9293
+web: bin/rails server -b $IP_APP_DEV -p 3000
+private_pub: puma private_pub.ru -b tcp://0.0.0.0:9292 --pidfile tmp/pids/puma_private_pub.pid --redirect-stdout log/puma_private_pub.log
+private_pub_test: rackup private_pub.ru -s puma -E production -p 9293
 sidekiq: redis-cli flushdb && bundle exec sidekiq -q default -q mailers
 sphinx: bundle exec rake thinking_sphinx:run_in_foreground RAILS_ENV=development

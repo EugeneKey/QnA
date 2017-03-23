@@ -1,0 +1,10 @@
+development:
+  server: "http://localhost:9292/faye"
+  secret_token: "secret"
+test:
+  server: "http://localhost:9293/faye"
+  secret_token: "secret"
+production:
+  server: "https://calm-fortress-47685.herokuapp.com/faye"
+  secret_token: "78448b4dffe09838a5f04d8020093e63ae0d689cbbefd8f00154265e83d4f5e1"
+  signature_expiration: 3600 # one hour
