@@ -12,7 +12,7 @@
 !/log/.keep
 /tmp
 
-# Игнорирование прочих ненужных файлов.
+# Ignore config file.
 database.yml
 private_pub.yml
 

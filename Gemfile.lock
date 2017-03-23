@@ -280,6 +280,7 @@ GEM
       method_source (~> 0.8.1)
       slop (~> 3.4)
     public_suffix (2.0.5)
+    puma (3.8.2)
     rack (1.6.5)
     rack-protection (1.5.3)
       rack
@@ -304,6 +305,11 @@ GEM
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
+    rails_12factor (0.0.3)
+      rails_serve_static_assets
+      rails_stdout_logging
+    rails_serve_static_assets (0.0.5)
+    rails_stdout_logging (0.0.5)
     railties (4.2.8)
       actionpack (= 4.2.8)
       activesupport (= 4.2.8)
@@ -498,7 +504,9 @@ DEPENDENCIES
   omniauth-twitter
   pg
   private_pub
+  puma
   rails (= 4.2.8)
+  rails_12factor
   redis-rails
   remotipart
   responders
@@ -520,6 +528,9 @@ DEPENDENCIES
   web-console (~> 2.0)
   whenever
   will_paginate (~> 3.1.1)
+
+RUBY VERSION
+   ruby 2.4.0p0
 
 BUNDLED WITH
    1.14.5

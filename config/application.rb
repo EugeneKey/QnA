@@ -42,6 +42,6 @@ module Qna
       g.fixture_replacement :factory_girl, dir: 'spec/factories'
     end
 
-    config.cache_store = :redis_store, 'redis://localhost:6379/1/cache', { expires_in: 90.minutes }
+    config.cache_store = :redis_store, "#{ENV['REDIS_URL']}/1/cache", { expires_in: 90.minutes }
   end
 end

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 source 'https://rubygems.org'
+ruby '2.4.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.8'
@@ -42,7 +43,7 @@ gem 'redis-rails' # for caching
 gem 'thinking-sphinx' # for search engines Sphinx
 
 ### APP SERVER
-# Use Thin as the dev app server
+gem 'puma'
 gem 'thin'
 # Use Unicorn as the production app server
 gem 'unicorn'
@@ -66,10 +67,6 @@ gem 'doorkeeper'
 gem 'oj'
 gem 'oj_mimic_json'
 
-### CONFIG
-gem 'dotenv'
-gem 'dotenv-rails', require: 'dotenv/rails-now'
-
 ### BACKGROUND JOB
 gem 'sidekiq'
 gem 'whenever'
@@ -88,6 +85,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
+
+gem 'rails_12factor'
 
 group :development do
   # Use Capistrano for deployment
@@ -131,6 +130,10 @@ group :development, :test do
   gem 'rubocop-rspec'
   # With guard
   gem 'guard-rubocop'
+
+  ### CONFIG
+  gem 'dotenv'
+  gem 'dotenv-rails', require: 'dotenv/rails-now'
 end
 
 group :test do
