@@ -43,10 +43,7 @@ gem 'redis-rails' # for caching
 gem 'thinking-sphinx' # for search engines Sphinx
 
 ### APP SERVER
-gem 'puma'
 gem 'thin'
-# Use Unicorn as the production app server
-gem 'unicorn'
 
 ### COMET with WEBSOCKETS
 gem 'private_pub'
