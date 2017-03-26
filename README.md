@@ -7,7 +7,7 @@ This app based on main idea of stackowerflow: people can ask questions and creat
 **Actions mostly works without reload (ajax) New records appears on page without reload for all users (comet) Faye through private pub**
 
   - gem 'private_pub'
-  - gem 'thin'
+  - gem 'puma'
 
 **Authentication**
 
@@ -68,9 +68,11 @@ This app based on main idea of stackowerflow: people can ask questions and creat
 
   - gem 'capistrano'
 
-**Unicorn as production webserver**
-
+**Different production webserver**
+  
+  - gem 'puma'
   - gem 'unicorn'
+  - gem 'passenger'
 
 ### Ruby & Rails version
 

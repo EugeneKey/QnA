@@ -35,18 +35,15 @@ gem 'jasny-bootstrap-rails'
 # AJAX file uploads with jQuery
 gem 'remotipart'
 
+### APP SERVER
+gem 'puma'
+
 ### DATABASES & SEARCH
 # Use postgresql as the database for Active Record
 gem 'mysql2' # for install sphinx
 gem 'pg'
 gem 'redis-rails' # for caching
 gem 'thinking-sphinx' # for search engines Sphinx
-
-### APP SERVER
-gem 'puma'
-gem 'thin'
-# Use Unicorn as the production app server
-gem 'unicorn'
 
 ### COMET with WEBSOCKETS
 gem 'private_pub'
@@ -77,6 +74,10 @@ gem 'responders'
 # minimal two way bridge between the V8 JavaScript engine and Ruby
 gem 'mini_racer', platforms: :ruby
 
+### CONFIG
+gem 'dotenv'
+gem 'dotenv-rails', require: 'dotenv/rails-now'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 
@@ -86,16 +87,14 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-gem 'rails_12factor'
-
 group :development do
   # Use Capistrano for deployment
   gem 'capistrano', require: false
   gem 'capistrano-bundler', require: false
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
+  gem 'capistrano3-puma',   require: false
   gem 'capistrano-sidekiq', require: false
-  gem 'capistrano3-unicorn', require: false
 
   # Annotate Rails classes with schema and routes info
   gem 'annotate'
@@ -131,9 +130,6 @@ group :development, :test do
   # With guard
   gem 'guard-rubocop'
 
-  ### CONFIG
-  gem 'dotenv'
-  gem 'dotenv-rails', require: 'dotenv/rails-now'
 end
 
 group :test do

@@ -20,5 +20,6 @@ test:
 production:
   <<: *default
   database: qna_prod
-  username: <%= ENV['QNA_DATABASE_USERNAME'] %>
-  password: <%= ENV['QNA_DATABASE_PASSWORD'] %>
+  host:     <%= ENV['QNA_DB_HOST'] %>
+  username: <%= ENV['QNA_DB_USERNAME'] %>
+  password: <%= ENV['QNA_DB_PASSWORD'] %>
