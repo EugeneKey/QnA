@@ -1,10 +1,9 @@
 h1 All questions
-- cache collection_cache_key_for :question do
-  .list-questions
-    - @questions.each do |question|
-      div class="question-summary" id="question-#{question.id}"
-        .question-title= link_to question.title, question
-        .question-text= truncate(question.text, length: 200)
-  =will_paginate @questions
+.list-questions
+  - @questions.each do |question|
+    div class="question-summary" id="question-#{question.id}"
+      .question-title= link_to question.title, question
+      .question-text= truncate(question.text, length: 400)
+=will_paginate @questions
 
 = subscribe_to "/questions/index"
